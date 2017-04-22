@@ -23,7 +23,7 @@ class Player {
       go_down = spriteSheet.get(25,7,100,110);
       
       //just gets the right image, flips it, and sets it as the left image
-      PImage flipped = createImage(go_right.width,go_right.height,RGB);
+      PImage flipped = createImage(go_right.width,go_right.height,ARGB);
       for(int y = 0; y < go_right.height; y++){
         for(int x = 0; x < go_right.width; x++){
           flipped.set(go_right.width-x-1,y,go_right.get(x,y));
@@ -42,7 +42,7 @@ class Player {
   void display(){
 
     image(dir.get(num), location.x, location.y);
-
+    
   }
   
   void update(){
