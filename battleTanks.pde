@@ -1,5 +1,7 @@
 Player player;
 boolean onMenu;
+boolean mapMaker;
+mapEditor editor;
 
 int menuPosition;
 boolean select = false;
@@ -15,11 +17,13 @@ void setup(){
   creditScreen = loadImage("credits.png");
       
   player = new Player("data/tank00.png");
+  editor = new mapEditor();
     
   menuPosition = 1;
   
   frameRate(30);
   onMenu = true;
+  mapMaker = false;
 }
 
 void draw(){
@@ -27,8 +31,14 @@ void draw(){
   if(onMenu){
    menu(); 
   }
+  else if( !onMenu && mapMaker ){
+    editor.drawLoop();
+    if(editor.status() == 1){
+      onMenu = true;
+      mapMaker = false;
+    };
+  }
   else{
-    
     background(255);
     player.update();
     player.display();
@@ -54,6 +64,9 @@ void keyPressed(){
      select = true;   
     }    
   }
+  
+  
+  // TODO: if in game:
   player.move(keyCode); 
 }
 
@@ -77,9 +90,17 @@ void menu(){
     println(menuPosition);
     println(select);
     
-    if(menuPosition == 4 && select){
+    //Map Builder
+    if(menuPosition == 3 && select){
+      onMenu = false;
+      mapMaker = true;
+      editor.startup();
+    }
+    //Exit 
+    else if(menuPosition == 4 && select){
       exit(); 
     }
+    //Credits screen
     else if(menuPosition == 5 && select){
        menuScreen = 1; 
        menuPosition = 1;

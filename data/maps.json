@@ -1,0 +1,17 @@
+{"maps": [
+  {
+    "fileName": "desert.json",
+    "id": 0,
+    "mapName": "The Desert"
+  },
+  {
+    "fileName": "forrest.json",
+    "id": 1,
+    "mapName": "The Forrest"
+  },
+  {
+    "fileName": "playground.json",
+    "id": 2,
+    "mapName": "Adam's playground"
+  }
+]}
