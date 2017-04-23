@@ -13,6 +13,7 @@ PImage creditScreen;
 void setup(){
   size(960,960);
   
+  
   mainMenu = loadImage("mainMenu.png");
   creditScreen = loadImage("credits.png");
       
@@ -34,6 +35,7 @@ void draw(){
   else if( !onMenu && mapMaker ){
     editor.drawLoop();
     if(editor.status() == 1){
+      imageMode(CORNER);
       onMenu = true;
       mapMaker = false;
     };

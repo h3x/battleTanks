@@ -1,17 +1,13 @@
-{"maps": [
+{"map": [
   {
-    "fileName": "desert.json",
-    "id": 0,
-    "mapName": "The Desert"
-  },
-  {
-    "fileName": "forrest.json",
-    "id": 1,
-    "mapName": "The Forrest"
-  },
-  {
-    "fileName": "playground.json",
-    "id": 2,
-    "mapName": "Adam's playground"
+    "baseTile": 23,
+    "floor": {
+               32 : [0,3,98,3,2,7,3,2],
+               12 : [32,1,43,223,12,4]
+      },
+    "walls":  {
+               32 : [0,3,98,3,2,7,3,2],
+               12 : [32,1,43,223,12,4]
+             }
   }
 ]}
