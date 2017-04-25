@@ -106,9 +106,12 @@ class mapEditor {
       }
       else if(keyCode == 113){
        tileNumber++; 
-       println(json);
+       //println(json);
       }
       else if(keyCode == 114){
+       tileNumber--; 
+      }
+      else if(keyCode == 115){
        mode++; 
       }
       else{
