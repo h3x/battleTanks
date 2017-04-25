@@ -11,7 +11,7 @@ PImage mainMenu;
 PImage creditScreen;
 
 void setup(){
-  size(960,960);
+  size(1050,720);
   
   
   mainMenu = loadImage("mainMenu.png");
@@ -53,12 +53,12 @@ void keyPressed(){
     if(keyCode == UP){
       menuPosition -= 1;
       if(menuPosition == 0){
-        menuPosition = 5;
+        menuPosition = 6;
       }
     }
     else if(keyCode == DOWN){
       menuPosition += 1;
-      if(menuPosition == 6){
+      if(menuPosition == 7){
         menuPosition = 1;
       }
     }
@@ -86,11 +86,32 @@ void menu(){
     fill(173,149, 34);
     rect(0,0, height,width);
     fill(143,60,30);
-    rect(0,(menuPosition * 150) + 27,width,110);
-    image(mainMenu, 0, 0); 
     
-    println(menuPosition);
-    println(select);
+    
+    int rectPos = 0;
+    switch(menuPosition){
+     case 1:
+       rectPos = 190;
+       break;
+     case 2:
+       rectPos = 260;
+       break;       
+     case 3:
+       rectPos = 330;
+       break;
+     case 4:
+       rectPos = 400;
+       break;
+     case 5:
+       rectPos = 460;
+       break;
+     case 6:
+       rectPos = 520;
+       break;
+    }
+    
+    rect(0,rectPos,width,60);    
+    image(mainMenu, 0, 0); 
     
     //Map Builder
     if(menuPosition == 3 && select){
@@ -99,11 +120,11 @@ void menu(){
       editor.startup();
     }
     //Exit 
-    else if(menuPosition == 4 && select){
+    else if(menuPosition == 6 && select){
       exit(); 
     }
     //Credits screen
-    else if(menuPosition == 5 && select){
+    else if(menuPosition == 4 && select){
        menuScreen = 1; 
        menuPosition = 1;
     }       
