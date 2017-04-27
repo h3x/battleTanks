@@ -1,7 +1,13 @@
 Player player;
+Turret turret;
 boolean onMenu;
 boolean mapMaker;
 mapEditor editor;
+
+boolean upKey;
+boolean downKey;
+boolean leftKey;
+boolean rightKey;
 
 int menuPosition;
 boolean select = false;
@@ -69,7 +75,7 @@ void keyPressed(){
   
   
   // TODO: if in game:
-  player.move(keyCode); 
+  player.move(); 
 }
 
 
@@ -77,6 +83,7 @@ void keyReleased(){
   if(keyCode == 10){
    select = false; 
   }
+  player.idle();
 }
 
 void menu(){
