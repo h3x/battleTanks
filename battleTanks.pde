@@ -1,3 +1,17 @@
+/* Credits
+
+Song used with permission from creator.
+Original content creator: Alexandr Zhelanov
+https://opengameart.org/content/enemy-spotted
+
+*/
+
+//Music player
+import ddf.minim.*;
+Minim minim = new Minim(this);
+AudioPlayer mainTheme;
+boolean music = false;
+
 Player player;
 Turret turret;
 boolean onMenu;
@@ -31,6 +45,13 @@ void setup(){
   frameRate(30);
   onMenu = true;
   mapMaker = false;
+  
+  //Play theme music
+  mainTheme = minim.loadFile("data/Enemy spotted.mp3");
+  if(!music) {
+    mainTheme.loop();
+    music = true;
+  }
 }
 
 void draw(){
