@@ -18,11 +18,6 @@ boolean onMenu;
 boolean mapMaker;
 mapEditor editor;
 
-boolean upKey;
-boolean downKey;
-boolean leftKey;
-boolean rightKey;
-
 int menuPosition;
 boolean select = false;
 int menuScreen = 0;
@@ -37,7 +32,7 @@ void setup(){
   mainMenu = loadImage("mainMenu.png");
   creditScreen = loadImage("credits.png");
       
-  player = new Player("data/tank00.png");
+  player = new Player("KV-2_preview.png");
   editor = new mapEditor();
     
   menuPosition = 1;
@@ -56,22 +51,22 @@ void setup(){
 
 void draw(){
   
-  if(onMenu){
-   menu(); 
-  }
-  else if( !onMenu && mapMaker ){
-    editor.drawLoop();
-    if(editor.status() == 1){
-      imageMode(CORNER);
-      onMenu = true;
-      mapMaker = false;
-    };
-  }
-  else{
+  //if(onMenu){
+  // menu(); 
+  //}
+  //else if( !onMenu && mapMaker ){
+  //  editor.drawLoop();
+  //  if(editor.status() == 1){
+  //    imageMode(CORNER);
+  //    onMenu = true;
+  //    mapMaker = false;
+  //  };
+  //}
+  //else{
     background(255);
     player.update();
     player.display();
-  }
+  //}
 }
 
 
