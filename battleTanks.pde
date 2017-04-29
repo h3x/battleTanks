@@ -4,6 +4,10 @@ Song used with permission from creator.
 Original content creator: Alexandr Zhelanov
 https://opengameart.org/content/enemy-spotted
 
+Tank images approved for public use by creator.
+Original content creator: Remos Turcuman
+https://opengameart.org/content/tank-pack-bleeds-game-art
+
 */
 
 //Music player
@@ -13,7 +17,11 @@ AudioPlayer mainTheme;
 boolean music = false;
 
 Player player;
-Turret turret;
+//Turret turret;
+
+ArrayList<Turret> shell;
+//ArrayList<Turret> rocket;
+
 boolean onMenu;
 boolean mapMaker;
 mapEditor editor;
@@ -28,13 +36,14 @@ PImage creditScreen;
 void setup(){
   size(1050,720);
   
-  
   mainMenu = loadImage("mainMenu.png");
   creditScreen = loadImage("credits.png");
       
   player = new Player("KV-2_preview.png");
   editor = new mapEditor();
-    
+  shell = new ArrayList<Turret>();
+  //rocket = new ArrayList<Turret>();
+  
   menuPosition = 1;
   
   frameRate(30);
@@ -50,23 +59,33 @@ void setup(){
 }
 
 void draw(){
+  background(255);
   
-  //if(onMenu){
-  // menu(); 
-  //}
-  //else if( !onMenu && mapMaker ){
-  //  editor.drawLoop();
-  //  if(editor.status() == 1){
-  //    imageMode(CORNER);
-  //    onMenu = true;
-  //    mapMaker = false;
-  //  };
-  //}
-  //else{
-    background(255);
+  for (int i = shell.size()-1; i >= 0; i--) {
+    Turret s = shell.get(i);
+    s.update();
+    s.display();
+    if (s.wrap() == true) {
+      shell.remove(i);
+      break;
+    }
+  }
+    
+  if(onMenu){
+   menu(); 
+  }
+  else if( !onMenu && mapMaker ){
+    editor.drawLoop();
+    if(editor.status() == 1){
+      imageMode(CORNER);
+      onMenu = true;
+      mapMaker = false;
+    };
+  }
+  else{
     player.update();
     player.display();
-  //}
+  }
 }
 
 
@@ -91,7 +110,7 @@ void keyPressed(){
   
   
   // TODO: if in game:
-  player.move(); 
+  player.move();
 }
 
 
@@ -99,7 +118,12 @@ void keyReleased(){
   if(keyCode == 10){
    select = false; 
   }
+  // TODO: if in game:
   player.idle();
+  
+  if (keyCode == ' ') {
+    shell.add(new Turret(player.location));
+  }
 }
 
 void menu(){
