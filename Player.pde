@@ -30,7 +30,7 @@ class Player {
   
   void acceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
-    acceleration.mult(5.0);
+    acceleration.mult(3.0);
     velocity.add(acceleration);
     
   }
@@ -38,7 +38,7 @@ class Player {
   
   void deceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
-    acceleration.mult(-2.5);
+    acceleration.mult(-2);
     velocity.add(acceleration);
     
   }
@@ -54,8 +54,10 @@ class Player {
     
     pushMatrix();
     imageMode(CENTER);
+    
     translate(location.x, location.y);
     rotate(heading);
+    scale(0.2);
     image(tank, 0, 0);
     popMatrix();
     

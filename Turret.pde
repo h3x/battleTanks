@@ -18,11 +18,16 @@ class Turret {
   void display() {
     //TODO
     //Replace ellipse with an image of a tank shell
-    pushStyle();
+    println(location);
+    pushMatrix();
+    //pushStyle();
+    translate(location.x, location.y);
     stroke(87, 87, 87);
     fill(167, 167, 167);
-    ellipse(location.x, location.y, radius+5, radius+5);
-    popStyle();
+    //fill(0);
+    ellipse(0,0, radius+5, radius+5);
+    popMatrix();
+    //popStyle();
     
   }
   

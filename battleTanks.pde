@@ -159,6 +159,10 @@ void menu(){
     
     rect(0,rectPos,width,60);    
     image(mainMenu, 0, 0); 
+    //MultiPlayer
+    if(menuPosition == 1 && select){
+     onMenu = false; 
+    }
     
     //Map Builder
     if(menuPosition == 3 && select){
