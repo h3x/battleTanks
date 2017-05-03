@@ -19,9 +19,9 @@ class Player {
   PImage tank;
   
   
-  public Player(String file) {
+  public Player(String file, int x, int y) {
     tank = loadImage(file);
-    location = new PVector(width/2, height/2);
+    location = new PVector(x, y);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
     
@@ -114,5 +114,22 @@ class Player {
     if (keyCode == RIGHT) {
       turnRight = false;
     }
+  }
+  
+    void setVelocity(int x, int y){
+    location.add(new PVector(x ,y));
+  }
+  
+  void setLocation(int x, int y){
+   location.x = x;
+   location.y = y;
+  }
+  
+  int getXLocation(){
+   return int(location.x); 
+  }
+  
+ int getYLocation(){
+   return int(location.y); 
   }
 }
