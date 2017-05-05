@@ -12,6 +12,7 @@ Original content creator: Remos Turcuman
 https://opengameart.org/content/tank-pack-bleeds-game-art
 
 */
+
 //Network stuff
 Server s;
 Client c;
@@ -28,7 +29,6 @@ String LOCAL = "127.0.0.1";
 
 //map stuff
 Map map;
-//temp map
 int[] tmp = {191, 225, 259, 293, 327, 361, 397, 433, 469, 505, 541, 577, 613, 579, 545, 511, 477, 443, 375, 409, 123, 157, 159, 195, 231, 267, 303, 339};
 ArrayList<Integer> mapTiles = new ArrayList<Integer>();
 float tileSize = 30;
@@ -126,8 +126,7 @@ void draw(){
     };
   }
   else{
-    //player.update();
-    //player.display();
+
   
   //if this is the client, read the data sent over the network
   //until a newline is send, the parse that block, and wait for the next one
@@ -143,9 +142,17 @@ void draw(){
       parse(inString);
     }
   }
+      //write new location to client/server
+  if (isServer) {
+    s.write("#PS" + player.getXLocation() + "," + player.getYLocation() +"\n");
+  } else {
+    c.write("#PS" + player.getXLocation() + "," + player.getYLocation() +"\n");
+  }
+  //println(player.getHeading());
   map.drawMap();
   player.display();
   player.update();
+  player.collision();
   player2.display();
   player2.update();
   }
@@ -210,12 +217,7 @@ void keyPressed(){
   // TODO: if in game:
   player.move();
   
-    //write new location to client/server
-  if (isServer) {
-    s.write("#PS" + player.getXLocation() + "," + player.getYLocation() +"\n");
-  } else {
-    c.write("#PS" + player.getXLocation() + "," + player.getYLocation() +"\n");
-  }
+
 }
 
 

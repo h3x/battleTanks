@@ -18,12 +18,15 @@ class Player {
   
   PImage tank;
   
+  ArrayList<PVector> mapCoords;
   
   public Player(String file, int x, int y) {
     tank = loadImage(file);
     location = new PVector(x, y);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
+    
+    mapCoords = tilesToCoords();
     
   }
   
@@ -57,10 +60,12 @@ class Player {
     
     translate(location.x, location.y);
     rotate(heading);
-    scale(0.2);
+    scale(0.2, 0.15);
     image(tank, 0, 0);
     popMatrix();
     
+    stroke(255,0,0);
+    rect(location.x-10,location.y- 10, 20,20);
   }
   
   
@@ -125,6 +130,16 @@ class Player {
    location.y = y;
   }
   
+  boolean collision(){
+    println(mapCoords);
+    
+    return true;
+  }
+  
+  float getHeading(){
+   return heading; 
+  }
+  
   int getXLocation(){
    return int(location.x); 
   }
@@ -132,4 +147,13 @@ class Player {
  int getYLocation(){
    return int(location.y); 
   }
+  
+  ArrayList<PVector> tilesToCoords(){
+    ArrayList<PVector> mapCoords = new ArrayList<PVector>();
+   for (int i = 0; i < mapTiles.size(); i++){
+     mapCoords.add(Util.numberToCoord(mapTiles.get(i)));
+   }
+   return mapCoords;
+  }
+  
 }

@@ -2,7 +2,6 @@ static class Util {
   
   // Utility class for common tools
   
-  
   static PVector numberToCoord(int num, float tilesAcross, float tileSize) {
     float tileX =  (num % tilesAcross ) * tileSize;
     float tileY;
@@ -13,6 +12,12 @@ static class Util {
     }
     return new PVector(tileX, tileY);
   }
+  
+    static PVector numberToCoord(int num) {
+      float tile_Size = 30;
+      float tiles_Across = 1050/tile_Size;
+      return numberToCoord(num, tiles_Across, tile_Size);
+  }
 
   static int coordToNumber(PVector position, float tilesAcross, float tileSize) {
     int x = floor(position.x);
@@ -22,5 +27,12 @@ static class Util {
     int numY = floor(y / tileSize);
 
     return numX + floor( numY * tilesAcross);
+  }
+  
+    static int coordToNumber(PVector position) {
+      float tile_Size = 30;
+      float tiles_Across = 1050/tile_Size;
+      return coordToNumber(position,  tiles_Across, tile_Size);
+  
   }
 }

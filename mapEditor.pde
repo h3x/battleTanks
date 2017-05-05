@@ -1,9 +1,8 @@
 class mapEditor {
 
   int currentStatus;
-  JSONObject json;
   PImage tiles;
-  //PImage base;
+  PImage base;
 
   ArrayList mapTiles = new ArrayList();
 
@@ -24,7 +23,8 @@ class mapEditor {
     //this method runs only once when the map editor is loaded. use for 
     //set up just like in the normal setup() in processing
 
-    json = loadJSONObject("maps.json");
+   // json = loadJSONObject("maps.json");
+   // TODO: open file named maps
     tiles = loadImage("tileMap.png");
     tileType = 0;
     tileNumber = -1;
@@ -50,15 +50,19 @@ class mapEditor {
     mode = mode % 3; //base, wall or floor tile editing
     fill(255, 0, 0);
     for (int i = mapTiles.size() -1; i > 0; i--) {
-      location= numberToCoord((int)mapTiles.get(i));
+      location= Util.numberToCoord((int)mapTiles.get(i));
       rect(location.x, location.y, tileSize, tileSize);
     }
 
 
-
+    int tileSectionX;
+    int tileSectionY;
+    int baseTileX; // = something - the number address of the tile from the spritesheet
+    int baseTileY; // = something
+    
+    
     //for(int i = 0; i < tileX; i++){
     // for(int j = 0; j < tileY; j++){     
-    //   JSONArray values = new JSONArray();
 
     //   tileSectionX = tileSize * i + (tileSize / 2);
     //   tileSectionY = tileSize * j + (tileSize / 2);       
@@ -84,37 +88,17 @@ class mapEditor {
     }
 
     if (mouseButton == LEFT) {
-      int tileClicked = coordToNumber(new PVector(mouseX, mouseY));
+      int tileClicked = Util.coordToNumber(new PVector(mouseX, mouseY));
       if (mapTiles.indexOf(tileClicked) < 0) {
         mapTiles.add(tileClicked);
       }
     } else if (mousePressed && mouseButton == RIGHT) {
-      int tileClicked = coordToNumber(new PVector(mouseX, mouseY));
+      int tileClicked = Util.coordToNumber(new PVector(mouseX, mouseY));
       int arrayIndex = mapTiles.indexOf(tileClicked);
       if(arrayIndex >= 0){
         mapTiles.remove(arrayIndex);
       }
     }
-  }
-
-
-  PVector numberToCoord(int num) {
-    tileX =  floor(num % tilesAcross ) * tileSize;
-    if (num >= tilesAcross) {
-      tileY = floor(num / tilesAcross) * tileSize;
-    } else {
-      tileY = 0;
-    }
-    return new PVector(tileX, tileY);
-  }
-
-  int coordToNumber(PVector position) {
-    int x = floor(position.x);
-    int y = floor(position.y);
-
-    int numX = floor(x / tileSize);
-    int numY = floor(y / tileSize);
-    return numX + floor( numY * tilesAcross);
   }
 
   //this is like the keyPressed() method. the key_pressed argument is the keyCode of the pressed key
