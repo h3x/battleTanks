@@ -1,6 +1,10 @@
 static class Util {
   
   // Utility class for common tools
+  static int tileSize = 30;
+  
+  
+  
   
   static PVector numberToCoord(int num, float tilesAcross, float tileSize) {
     float tileX =  (num % tilesAcross ) * tileSize;

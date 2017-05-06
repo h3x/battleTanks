@@ -2,13 +2,17 @@ class Map {
 
   ArrayList<Integer> newMap;
   PVector location;
-
+  int tileSize;
+  int tilesAcross;
+  
   Map(ArrayList<Integer> newMap) {
     this.newMap = newMap;
-    
+    tileSize = Util.tileSize;
+    tilesAcross = width / tileSize;
 }
 
   void drawMap() {
+    fill(200,60,20);
     for (int i = mapTiles.size() -1; i >= 0; i--) {
       location = Util.numberToCoord((int)mapTiles.get(i), tilesAcross, tileSize );
       rect(location.x, location.y, tileSize, tileSize);
@@ -27,21 +31,9 @@ class Map {
   }
   
   void saveMap(){
-    
-  }
-  
-  ArrayList<Integer> loadMap(){
-    return newMap;
-  }
-  
-  Map getMap(){
-    return this;
+    //may or may not use this later
   }
 
-  boolean collision() {
-
-    return true;
-  }
 
   void newTile(int x, int y) {
     int tileClicked = Util.coordToNumber(new PVector(x, y), tilesAcross, tileSize);

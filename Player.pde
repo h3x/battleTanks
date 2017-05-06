@@ -1,7 +1,7 @@
 //creates a player object with a provided spritesheet
 
 class Player {
-  
+  int tileSize; 
   PVector location;
   PVector velocity;
   PVector acceleration;
@@ -16,6 +16,8 @@ class Player {
   float angle;
   float heading;
   
+  ArrayList<PVector> coordMap;
+  
   PImage tank;
   
   ArrayList<PVector> mapCoords;
@@ -25,25 +27,33 @@ class Player {
     location = new PVector(x, y);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
+    tileSize = Util.tileSize;
     
-    mapCoords = tilesToCoords();
-    
+    coordMap = new ArrayList<PVector>();
+    for (int i = 0; i < mapTiles.size(); i++) {
+      coordMap.add(Util.numberToCoord(mapTiles.get(i)));
+    }
   }
   
   
   void acceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
     acceleration.mult(3.0);
-    velocity.add(acceleration);
-    
+    //check for walls before allowing movement forward
+    if (walls(acceleration)){
+      velocity.add(acceleration);
+    }
   }
   
   
   void deceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
     acceleration.mult(-2);
-    velocity.add(acceleration);
     
+    //check for walls before allowing movement backwards
+    if (walls(acceleration)){
+      velocity.add(acceleration);
+    }
   }
   
   
@@ -52,6 +62,26 @@ class Player {
     
   }
   
+  boolean walls(PVector dir) {
+
+    PVector velCopy = velocity.copy();
+    PVector locCopy = location.copy();
+
+    velCopy.add(dir);
+    locCopy.add(velCopy);
+    noStroke();
+
+    for (int i = 0; i< coordMap.size(); i++) {
+      if (locCopy.x > coordMap.get(i).x -15 && locCopy.x < coordMap.get(i).x + tileSize + 15) {
+        if (locCopy.y > coordMap.get(i).y - 15 && locCopy.y < coordMap.get(i).y + tileSize + 15) {
+          return false;
+        }
+      }
+    }
+    return true;
+
+  }
+
   
   void display() {
     

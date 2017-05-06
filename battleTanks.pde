@@ -102,7 +102,7 @@ void setup(){
 
 
 void draw(){
-  background(255);
+  background(51);
   
   for (int i = shell.size()-1; i >= 0; i--) {
     Turret s = shell.get(i);
