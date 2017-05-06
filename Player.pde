@@ -170,6 +170,10 @@ class Player {
    return heading; 
   }
   
+  void setHeading(float heading){
+   this.heading = heading; 
+  }
+  
   int getXLocation(){
    return int(location.x); 
   }

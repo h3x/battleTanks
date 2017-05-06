@@ -97,7 +97,7 @@ void setup(){
     c = new Client(this, LOCAL, PORT);
   }
   player = new Player("KV-2_preview.png", 50, 50);
-  player2 = new Player("KV-2_preview.png", -50, -50); //initalise player 2 off screen till they load in
+  player2 = new Player("KV-2_preview.png", -500, -500); //initalise player 2 off screen till they load in
 }
 
 
@@ -144,11 +144,12 @@ void draw(){
   }
       //write new location to client/server
   if (isServer) {
-    s.write("#PS" + player.getXLocation() + "," + player.getYLocation() +"\n");
+    println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
+    s.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
   } else {
-    c.write("#PS" + player.getXLocation() + "," + player.getYLocation() +"\n");
+    c.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
   }
-  //println(player.getHeading());
+  
   map.drawMap();
   player.display();
   player.update();
@@ -175,15 +176,17 @@ void parse(String inString) {
   if (inString.charAt(1) == 'P') {
     String playerData = inString.substring(3);
     int newX = int(playerData.substring(0, playerData.indexOf(',')));
-    int newY = int(playerData.substring(playerData.indexOf(',')+1, playerData.length()-1));
-
+    int newY = int(playerData.substring(playerData.indexOf(',')+1, playerData.indexOf('H')));
+    float newHeading = float(playerData.substring(playerData.indexOf('H') + 1, playerData.length()-1));
     //Player 1 (i.e this player)
     if (inString.charAt(2)== 'F') {
       player.setLocation(newX, newY);
+      player.setHeading(newHeading);
 
     //Player 2 (i.e remote player)
     } else if (inString.charAt(2)== 'S') {
       player2.setLocation(newX, newY);
+      player2.setHeading(newHeading);
     }
 
     println("Player Data: " + inString);
@@ -240,8 +243,8 @@ void serverEvent(Server someServer, Client someClient) {
   int randX = floor(random(width)); 
   int randY = floor(random(height));
   player2.setLocation(randX, randY);
-  s.write("#PF" + randX + "," + randY + "\n");
-  s.write("#PS" + player.getXLocation() + "," + player.getXLocation() +"\n");
+  s.write("#PF" + randX + "," + randY + "H" + player.getHeading() + "\n");
+  s.write("#PS" + player.getXLocation() + "," + player.getXLocation() + "H" + player.getHeading() + "\n");
   for (int i = 0; i < mapTiles.size(); i++) {
     sendMap += mapTiles.get(i)+",";
   }
