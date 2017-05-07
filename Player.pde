@@ -70,7 +70,7 @@ class Player {
     velCopy.add(dir);
     locCopy.add(velCopy);
     noStroke();
-
+    //println(coordMap);
     for (int i = 0; i< coordMap.size(); i++) {
       if (locCopy.x > coordMap.get(i).x -15 && locCopy.x < coordMap.get(i).x + tileSize + 15) {
         if (locCopy.y > coordMap.get(i).y - 15 && locCopy.y < coordMap.get(i).y + tileSize + 15) {
@@ -95,7 +95,7 @@ class Player {
     popMatrix();
     
     stroke(255,0,0);
-    rect(location.x-10,location.y- 10, 20,20);
+    //rect(location.x-10,location.y- 10, 20,20);
   }
   
   
@@ -161,7 +161,7 @@ class Player {
   }
   
   boolean collision(){
-    println(mapCoords);
+   // println(mapCoords);
     
     return true;
   }

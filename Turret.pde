@@ -18,7 +18,7 @@ class Turret {
   void display() {
     //TODO
     //Replace ellipse with an image of a tank shell
-    println(location);
+    //println(location);
     pushMatrix();
     //pushStyle();
     translate(location.x, location.y);

@@ -80,7 +80,7 @@ void setup(){
   
   //Play theme music
   mainTheme = minim.loadFile("data/Enemy spotted.mp3");
-  if(!music) {
+  if(music) {
     mainTheme.loop();
     music = true;
   }
@@ -126,8 +126,7 @@ void draw(){
     };
   }
   else{
-
-  
+    
   //if this is the client, read the data sent over the network
   //until a newline is send, the parse that block, and wait for the next one
   if (!isServer && c.available() > 0) {
@@ -138,13 +137,16 @@ void draw(){
   else if (isServer) {
     c = s.available();
     if (c != null) {
+      
+      
       String inString = c.readStringUntil(end); 
       parse(inString);
     }
   }
-      //write new location to client/server
+  
+  //write new location to client/server
   if (isServer) {
-    println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
+   // println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
     s.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
   } else {
     c.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
@@ -189,11 +191,11 @@ void parse(String inString) {
       player2.setHeading(newHeading);
     }
 
-    println("Player Data: " + inString);
+    //println("Player Data: " + inString);
   } else if (inString.charAt(1) == 'M') {
     map.decodeMap(inString);
 
-    print("Map data: " + inString) ;
+    //print("Map data: " + inString) ;
   }
 }
 
@@ -243,12 +245,11 @@ void serverEvent(Server someServer, Client someClient) {
   int randX = floor(random(width)); 
   int randY = floor(random(height));
   player2.setLocation(randX, randY);
-  s.write("#PF" + randX + "," + randY + "H" + player.getHeading() + "\n");
+  s.write("#PF" + randX + "," + randY + "H" + player.getHeading() + "\n"); //why is this random?
   s.write("#PS" + player.getXLocation() + "," + player.getXLocation() + "H" + player.getHeading() + "\n");
   for (int i = 0; i < mapTiles.size(); i++) {
     sendMap += mapTiles.get(i)+",";
   }
-
   s.write("#M" + sendMap + "\n");
 
   //println(player.getXLocation() + "," + player.getYLocation()); 
@@ -256,8 +257,6 @@ void serverEvent(Server someServer, Client someClient) {
   //println("player 2 loaded at " + randX + ", " + randY);
 }
 void menu(){
-
-  
   if(menuScreen == 0){
     fill(173,149, 34);
     rect(0,0, height,width);

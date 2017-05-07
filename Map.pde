@@ -27,7 +27,7 @@ class Map {
       newTile(tmpMap[i]);
     }
 
-    println(tmpMap);
+    //println(tmpMap);
   }
   
   void saveMap(){
