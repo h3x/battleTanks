@@ -2,20 +2,20 @@ import ddf.minim.*;
 import processing.net.*;
 
 /* Credits
-
-Song used with permission from creator.
-Original content creator: Alexandr Zhelanov
-https://opengameart.org/content/enemy-spotted
-
-Tank images approved for public use by creator.
-Original content creator: Remos Turcuman
-https://opengameart.org/content/tank-pack-bleeds-game-art
-
-*/
+ 
+ Song used with permission from creator.
+ Original content creator: Alexandr Zhelanov
+ https://opengameart.org/content/enemy-spotted
+ 
+ Tank images approved for public use by creator.
+ Original content creator: Remos Turcuman
+ https://opengameart.org/content/tank-pack-bleeds-game-art
+ 
+ */
 
 //Network stuff
-Server s;
-Client c;
+ Server s;
+ Client c; 
 
 String dataIn;
 byte end = 10;
@@ -61,30 +61,30 @@ int menuScreen = 0;
 PImage mainMenu;
 PImage creditScreen;
 
-void setup(){
-  size(1050,720);
-  
+void setup() {
+  size(1050, 720);
+
   mainMenu = loadImage("mainMenu.png");
   creditScreen = loadImage("credits.png");
-      
+
   //player = new Player("KV-2_preview.png");
   editor = new mapEditor();
   shell = new ArrayList<Turret>();
   //rocket = new ArrayList<Turret>();
-  
+
   menuPosition = 1;
-  
-  frameRate(30);
+
+  frameRate(60);
   onMenu = true;
   mapMaker = false;
-  
+
   //Play theme music
   mainTheme = minim.loadFile("data/Enemy spotted.mp3");
-  if(music) {
+  if (music) {
     mainTheme.loop();
     music = true;
   }
-  
+
   map = new Map(mapTiles);
   tilesAcross = width / tileSize;
 
@@ -101,9 +101,9 @@ void setup(){
 }
 
 
-void draw(){
+void draw() {
   background(51);
-  
+
   for (int i = shell.size()-1; i >= 0; i--) {
     Turret s = shell.get(i);
     s.update();
@@ -113,51 +113,48 @@ void draw(){
       break;
     }
   }
-    
-  if(onMenu){
-   menu(); 
-  }
-  else if( !onMenu && mapMaker ){
+
+  if (onMenu) {
+    menu();
+  } else if ( !onMenu && mapMaker ) {
     editor.drawLoop();
-    if(editor.status() == 1){
+    if (editor.status() == 1) {
       imageMode(CORNER);
       onMenu = true;
       mapMaker = false;
     };
-  }
-  else{
-    
-  //if this is the client, read the data sent over the network
-  //until a newline is send, the parse that block, and wait for the next one
-  if (!isServer && c.available() > 0) {
-    String inString = c.readStringUntil(end); 
-    parse(inString);
-  } 
-  //if this is the server, wait until a data is started, then capture it and process
-  else if (isServer) {
-    c = s.available();
-    if (c != null) {
-      
-      
+  } else {
+
+    //if this is the client, read the data sent over the network
+    //until a newline is send, the parse that block, and wait for the next one
+    if (!isServer && c.available() > 0) {
       String inString = c.readStringUntil(end); 
       parse(inString);
+    } 
+    //if this is the server, wait until a data is started, then capture it and process
+    else if (isServer) {
+      c = s.available();
+      if (c != null) {
+        String inString = c.readStringUntil(end); 
+        parse(inString);
+      }
     }
-  }
-  
-  //write new location to client/server
-  if (isServer) {
-   // println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
-    s.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
-  } else {
-    c.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
-  }
-  
-  map.drawMap();
-  player.display();
-  player.update();
-  player.collision();
-  player2.display();
-  player2.update();
+
+    //write new location to client/server
+    if (isServer) {
+      // println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
+      s.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
+    } else {
+      c.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
+    }
+
+    map.drawMap();
+    player.update();
+    player.display();
+
+    // player.collision();
+    player2.update();
+    player2.display();
   }
 }
 
@@ -180,13 +177,15 @@ void parse(String inString) {
     int newX = int(playerData.substring(0, playerData.indexOf(',')));
     int newY = int(playerData.substring(playerData.indexOf(',')+1, playerData.indexOf('H')));
     float newHeading = float(playerData.substring(playerData.indexOf('H') + 1, playerData.length()-1));
-    //Player 1 (i.e this player)
+    
+    //Player 1 (i.s player)
     if (inString.charAt(2)== 'F') {
       player.setLocation(newX, newY);
       player.setHeading(newHeading);
 
     //Player 2 (i.e remote player)
-    } else if (inString.charAt(2)== 'S') {
+    } 
+    else if (inString.charAt(2)== 'S') {
       player2.setLocation(newX, newY);
       player2.setHeading(newHeading);
     }
@@ -199,40 +198,36 @@ void parse(String inString) {
   }
 }
 
-void keyPressed(){
-  if(onMenu){
-    if(keyCode == UP){
+void keyPressed() {
+  if (onMenu) {
+    if (keyCode == UP) {
       menuPosition -= 1;
-      if(menuPosition == 0){
+      if (menuPosition == 0) {
         menuPosition = 6;
       }
-    }
-    else if(keyCode == DOWN){
+    } else if (keyCode == DOWN) {
       menuPosition += 1;
-      if(menuPosition == 7){
+      if (menuPosition == 7) {
         menuPosition = 1;
       }
+    } else if (keyCode == 10) {
+      select = true;
     }
-    else if(keyCode == 10){
-     select = true;   
-    }    
   }
-  
-  
+
+
   // TODO: if in game:
   player.move();
-  
-
 }
 
 
-void keyReleased(){
-  if(keyCode == 10){
-   select = false; 
+void keyReleased() {
+  if (keyCode == 10) {
+    select = false;
   }
   // TODO: if in game:
   player.idle();
-  
+
   if (keyCode == ' ') {
     shell.add(new Turret(player.location));
   }
@@ -256,71 +251,70 @@ void serverEvent(Server someServer, Client someClient) {
   //println("map: " + sendMap + "\n");
   //println("player 2 loaded at " + randX + ", " + randY);
 }
-void menu(){
-  if(menuScreen == 0){
-    fill(173,149, 34);
-    rect(0,0, height,width);
-    fill(143,60,30);
-    
-    
+void menu() {
+  if (menuScreen == 0) {
+    fill(173, 149, 34);
+    rect(0, 0, height, width);
+    fill(143, 60, 30);
+
+
     int rectPos = 0;
-    switch(menuPosition){
-     case 1:
-       rectPos = 190;
-       break;
-     case 2:
-       rectPos = 260;
-       break;       
-     case 3:
-       rectPos = 330;
-       break;
-     case 4:
-       rectPos = 400;
-       break;
-     case 5:
-       rectPos = 460;
-       break;
-     case 6:
-       rectPos = 520;
-       break;
+    switch(menuPosition) {
+    case 1:
+      rectPos = 190;
+      break;
+    case 2:
+      rectPos = 260;
+      break;       
+    case 3:
+      rectPos = 330;
+      break;
+    case 4:
+      rectPos = 400;
+      break;
+    case 5:
+      rectPos = 460;
+      break;
+    case 6:
+      rectPos = 520;
+      break;
     }
-    
-    rect(0,rectPos,width,60);    
+
+    rect(0, rectPos, width, 60);    
     image(mainMenu, 0, 0); 
     //MultiPlayer
-    if(menuPosition == 1 && select){
-     onMenu = false; 
+    if (menuPosition == 1 && select) {
+      onMenu = false;
     }
-    
+
     //Map Builder
-    if(menuPosition == 3 && select){
+    if (menuPosition == 3 && select) {
       onMenu = false;
       mapMaker = true;
       editor.startup();
     }
     //Exit 
-    else if(menuPosition == 6 && select){
-      exit(); 
+    else if (menuPosition == 6 && select) {
+      exit();
     }
     //Credits screen
-    else if(menuPosition == 4 && select){
-       menuScreen = 1; 
-       menuPosition = 1;
-    }       
-  }  
-  if(menuScreen == 1){    
-    if(menuPosition > 1){      
-      fill(143,60,30);
-      rect(0,0, height,width);
+    else if (menuPosition == 4 && select) {
+      menuScreen = 1; 
+      menuPosition = 1;
     }
-    else{
-      fill(173,149, 34);
-      rect(0,0, height,width);
+  }  
+  if (menuScreen == 1) {    
+    if (menuPosition > 1) {      
+      fill(143, 60, 30);
+      rect(0, 0, height, width);
+    } else {
+      fill(173, 149, 34);
+      rect(0, 0, height, width);
     }    
-    image(creditScreen,0,0);
-    if(select && menuPosition > 1){
-       menuScreen = 0; 
-       menuPosition = 1;
+    image(creditScreen, 0, 0);
+    if (select && menuPosition > 1) {
+      menuScreen = 0; 
+      menuPosition = 1;
     }
   }
 }

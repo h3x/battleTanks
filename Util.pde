@@ -1,3 +1,4 @@
+
 static class Util {
   
   // Utility class for common tools

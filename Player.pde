@@ -30,6 +30,7 @@ class Player {
     tileSize = Util.tileSize;
     
     coordMap = new ArrayList<PVector>();
+    
     for (int i = 0; i < mapTiles.size(); i++) {
       coordMap.add(Util.numberToCoord(mapTiles.get(i)));
     }
@@ -66,7 +67,10 @@ class Player {
 
     PVector velCopy = velocity.copy();
     PVector locCopy = location.copy();
-
+    
+    if( coordMap.size() <= 0){
+      player.onConnect();
+    }
     velCopy.add(dir);
     locCopy.add(velCopy);
     noStroke();
@@ -158,6 +162,16 @@ class Player {
   void setLocation(int x, int y){
    location.x = x;
    location.y = y;
+  }
+  
+  void onConnect(){
+    
+    for (int i = 0; i < mapTiles.size(); i++) {
+      if(mapTiles.size() <= 0){
+        coordMap.add(Util.numberToCoord(mapTiles.get(i)));
+      }
+    }
+  
   }
   
   boolean collision(){
