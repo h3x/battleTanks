@@ -2,6 +2,11 @@ static class Util {
   
   // Utility class for common tools
   static int tileSize = 30;
+  static boolean onMenu = true;
+  static String IP = "";
+  static boolean networkSetup = false;
+  static boolean setup = true;
+  static String hostname = "localhost";
   
   
   
@@ -17,10 +22,10 @@ static class Util {
     return new PVector(tileX, tileY);
   }
   
-    static PVector numberToCoord(int num) {
-      float tile_Size = 30;
-      float tiles_Across = 1050/tile_Size;
-      return numberToCoord(num, tiles_Across, tile_Size);
+  static PVector numberToCoord(int num) {
+    float tile_Size = 30;
+    float tiles_Across = 1050/tile_Size;
+    return numberToCoord(num, tiles_Across, tile_Size);
   }
 
   static int coordToNumber(PVector position, float tilesAcross, float tileSize) {

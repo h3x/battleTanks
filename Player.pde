@@ -21,13 +21,14 @@ class Player {
   
   PImage tank;
   
-  ArrayList<PVector> mapCoords;
+  //ArrayList<PVector> mapCoords;
   
   public Player(String file, int x, int y) {
     tank = loadImage(file);
     location = new PVector(x, y);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
+    heading = 0;
     tileSize = Util.tileSize;
     
     coordMap = new ArrayList<PVector>();
@@ -65,14 +66,13 @@ class Player {
   
   
   boolean walls(PVector dir) {
-
+   // println(coordMap.size());
     PVector velCopy = velocity.copy();
     PVector locCopy = location.copy();
 
     velCopy.add(dir);
     locCopy.add(velCopy);
-    noStroke();
-
+    //noStroke();
     for (int i = 0; i< coordMap.size(); i++) {
       if (locCopy.x > coordMap.get(i).x -15 && locCopy.x < coordMap.get(i).x + tileSize + 15) {
         if (locCopy.y > coordMap.get(i).y - 15 && locCopy.y < coordMap.get(i).y + tileSize + 15) {
@@ -81,7 +81,6 @@ class Player {
       }
     }
     return true;
-
   }
 
   
@@ -97,7 +96,7 @@ class Player {
     popMatrix();
     
     stroke(255,0,0);
-    rect(location.x-10,location.y- 10, 20,20);
+    //rect(location.x-10,location.y- 10, 20,20);
     
     if (shotFired == true && frameCount % 100 == 0) {
       shotFired = false;
@@ -106,6 +105,11 @@ class Player {
   
   
   void update() {
+    //println(mapTiles.size());
+    if( coordMap.size() <= 0){
+      onConnect();
+    }
+    
     if (goForward) {
       acceleration();
     }
@@ -172,10 +176,12 @@ class Player {
    location.y = y;
   }
   
-  boolean collision(){
-    println(mapCoords);
-    
-    return true;
+  
+  void onConnect(){
+    for (int i = 0; i < mapTiles.size(); i++) {
+           coordMap.add(Util.numberToCoord(mapTiles.get(i)));
+      
+    }  
   }
   
   float getHeading(){

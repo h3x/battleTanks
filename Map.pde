@@ -13,6 +13,7 @@ class Map {
 
   void drawMap() {
     fill(200,60,20);
+    stroke(0);
     for (int i = mapTiles.size() -1; i >= 0; i--) {
       location = Util.numberToCoord((int)mapTiles.get(i), tilesAcross, tileSize );
       rect(location.x, location.y, tileSize, tileSize);
@@ -29,10 +30,6 @@ class Map {
 
     println(tmpMap);
   }
-  
-  void saveMap(){
-    //may or may not use this later
-  }
 
 
   void newTile(int x, int y) {
@@ -41,6 +38,8 @@ class Map {
       mapTiles.add(tileClicked);
     }
   }
+  
+ 
 
   void newTile(int tileClicked) {
     if (mapTiles.indexOf(tileClicked) < 0) {
@@ -54,6 +53,14 @@ class Map {
     int arrayIndex = mapTiles.indexOf(tileClicked);
     if (arrayIndex >= 0) {
       mapTiles.remove(arrayIndex);
+    }
+  }
+  
+  void addABunchOfTiles(int[] newMap){
+    for(int i = 0; i < newMap.length; i++){
+     if(mapTiles.indexOf(newMap[i]) < 0){
+      newTile(tmp[i]); 
+     }
     }
   }
 }

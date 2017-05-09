@@ -23,8 +23,8 @@ class Turret {
     //pushStyle();
     translate(location.x, location.y);
     stroke(0, 0, 0);
-    fill(87, 87, 87);
-    //fill(0);
+    //fill(87, 87, 87);
+    fill(255);
     ellipse(0,0, radius+5, radius+5);
     popMatrix();
     //popStyle();
