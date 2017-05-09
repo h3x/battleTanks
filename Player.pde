@@ -12,7 +12,8 @@ class Player {
   boolean goBack;
   boolean turnLeft;
   boolean turnRight;
-  
+  boolean shotFired;
+
   float angle;
   float heading;
   
@@ -62,6 +63,7 @@ class Player {
     
   }
   
+  
   boolean walls(PVector dir) {
 
     PVector velCopy = velocity.copy();
@@ -84,7 +86,7 @@ class Player {
 
   
   void display() {
-    
+
     pushMatrix();
     imageMode(CENTER);
     
@@ -96,6 +98,10 @@ class Player {
     
     stroke(255,0,0);
     rect(location.x-10,location.y- 10, 20,20);
+    
+    if (shotFired == true && frameCount % 100 == 0) {
+      shotFired = false;
+    }
   }
   
   
@@ -148,6 +154,12 @@ class Player {
     }
     if (keyCode == RIGHT) {
       turnRight = false;
+    }
+    if (keyCode == ' ' && shotFired == false) {
+      tankShot.play();
+      shell.add(new Turret(location));
+      shotFired = true;
+      tankShot.rewind();
     }
   }
   
