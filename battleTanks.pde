@@ -41,6 +41,7 @@ int tileNumber;
 //Music player
 Minim minim = new Minim(this);
 AudioPlayer mainTheme;
+AudioPlayer tankShot;
 boolean music = false;
 
 Player player; //this player
@@ -61,9 +62,14 @@ int menuScreen = 0;
 PImage mainMenu;
 PImage creditScreen;
 
+// Varables used for time
+int begin;
+int time;
+int duration;
+
 void setup(){
   size(1050,720);
-  
+
   mainMenu = loadImage("mainMenu.png");
   creditScreen = loadImage("credits.png");
       
@@ -77,6 +83,8 @@ void setup(){
   frameRate(30);
   onMenu = true;
   mapMaker = false;
+  
+  tankShot = minim.loadFile("127845__cyberkineticfilms__tank-fire-mixed.wav");
   
   //Play theme music
   mainTheme = minim.loadFile("data/Enemy spotted.mp3");
@@ -103,7 +111,7 @@ void setup(){
 
 void draw(){
   background(51);
-  
+
   for (int i = shell.size()-1; i >= 0; i--) {
     Turret s = shell.get(i);
     s.update();
@@ -228,9 +236,9 @@ void keyReleased(){
   // TODO: if in game:
   player.idle();
   
-  if (keyCode == ' ') {
-    shell.add(new Turret(player.location));
-  }
+  //if (keyCode == ' ') {
+  //  shell.add(new Turret(player.location));
+  //}
 }
 
 // when first connecting, server sends initial co-ords of both players 
