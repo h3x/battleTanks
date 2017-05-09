@@ -192,8 +192,13 @@ class Menu{
   
   if(userInput){
    IP += key; 
-   if(keyCode == 8){
-    IP = IP.substring(0, IP.length() - 2); 
+   if(keyCode == 8 ){
+     if (IP.length() < 2){
+       IP = "";
+     }
+     else{
+        IP = IP.substring(0, IP.length() - 2); 
+     }
    }
       if(IP.length() > 0 && keyCode == 10){
       Util.onMenu = false;
