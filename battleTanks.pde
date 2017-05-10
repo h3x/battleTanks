@@ -107,8 +107,12 @@ void draw(){
           Util.hostname = myIp.getHostName();
     }
     catch (UnknownHostException e){}
+    isServer = menu.getServerStatus();
+    isLocal = menu.isLocal();
+    
     }
-  
+    
+    
   else{
     //setup networking stuff (runs once only when the network config is set up via the menu)
     
@@ -127,15 +131,17 @@ void draw(){
       Util.setup = false;
       Util.networkSetup = true;
       isServer = menu.getServerStatus();
-      if(menu.isLocal() == true){
+     
+      if(isLocal == true){
        player2.setLocalPlay(true);
        player2.setLocation((int)player2LocalCoords.x, (int)player2LocalCoords.y);
       }
+       println("setup: " + isLocal);
      
     }
     
   
-      println("local:" + menu.isLocal());
+  //println("local:" + menu.isLocal());
   //The real draw loop starts here after network stuff is setup
   for (int i = shell.size()-1; i >= 0; i--) {
     Turret s = shell.get(i);
@@ -255,16 +261,22 @@ void keyPressed(){
   else{
     //add if statement here to check for localPlay boolean, and player2.moveLocal() will be called (need to create that with different key bondiongs)
    player.move();
-   player2.move();
-   if(key == 'a'){
-    println(mapTiles); 
+   
+   if(isLocal){
+     player2.move();
    }
+   //if(key == 'a'){
+   // println(mapTiles); 
+   //}
   }
 }
 
 
 void keyReleased(){
-  player2.idle();
+  if(isLocal){
+    player2.idle();
+  }
+  
   if( !Util.onMenu && player.idle()){
     if (isServer) {
       //println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
@@ -280,10 +292,11 @@ void keyReleased(){
 // and the map data
 void serverEvent(Server someServer, Client someClient) {
   println("We have a new client: " + someClient.ip()); 
-  int randX = floor(random(width)); 
-  int randY = floor(random(height));
-  player2.setLocation(randX, randY);
-  s.write("#PF" + randX + "," + randY + "H" + player.getHeading() + "\n");
+  
+  int p2x = floor(player2LocalCoords.x); 
+  int p2y = floor(player2LocalCoords.y);
+  player2.setLocation(p2x, p2y);
+  s.write("#PF" + p2x + "," + p2y + "H" + player.getHeading() + "\n");
   s.write("#PS" + player.getXLocation() + "," + player.getXLocation() + "H" + player.getHeading() + "\n");
   for (int i = 0; i < mapTiles.size(); i++) {
     sendMap += mapTiles.get(i)+",";

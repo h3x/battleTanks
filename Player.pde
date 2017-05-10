@@ -7,23 +7,23 @@ class Player {
   PVector acceleration;
   PVector deceleration;
   PVector direction;
-  
+
   boolean goForward;
   boolean goBack;
   boolean turnLeft;
   boolean turnRight;
   boolean shotFired;
   boolean isLocal = false;
-  
+
   float angle;
   float heading;
-  
+
   ArrayList<PVector> coordMap;
-  
+
   PImage tank;
-  
+
   //ArrayList<PVector> mapCoords;
-  
+
   public Player(String file, int x, int y) {
     tank = loadImage(file);
     location = new PVector(x, y);
@@ -31,44 +31,43 @@ class Player {
     acceleration = new PVector(0, 0);
     heading = 0;
     tileSize = Util.tileSize;
-   
-    
+
+
     coordMap = new ArrayList<PVector>();
     for (int i = 0; i < mapTiles.size(); i++) {
       coordMap.add(Util.numberToCoord(mapTiles.get(i)));
     }
   }
-  
-  
+
+
   void acceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
     acceleration.mult(3.0);
     //check for walls before allowing movement forward
-    if (walls(acceleration)){
+    if (walls(acceleration)) {
       velocity.add(acceleration);
     }
   }
-  
-  
+
+
   void deceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
     acceleration.mult(-2);
-    
+
     //check for walls before allowing movement backwards
-    if (walls(acceleration)){
+    if (walls(acceleration)) {
       velocity.add(acceleration);
     }
   }
-  
-  
+
+
   void steering(float angle) {
     heading += angle;
-    
   }
-  
-  
+
+
   boolean walls(PVector dir) {
-   // println(coordMap.size());
+    // println(coordMap.size());
     PVector velCopy = velocity.copy();
     PVector locCopy = location.copy();
 
@@ -85,34 +84,34 @@ class Player {
     return true;
   }
 
-  
+
   void display() {
 
     pushMatrix();
     imageMode(CENTER);
-    
+
     translate(location.x, location.y);
     rotate(heading);
     scale(0.2, 0.15);
     image(tank, 0, 0);
     popMatrix();
-    
-    stroke(255,0,0);
+
+    stroke(255, 0, 0);
     //rect(location.x-10,location.y- 10, 20,20);
-    
+
     if (shotFired == true && frameCount % 100 == 0) {
       shotFired = false;
     }
   }
-  
-  
+
+
   void update() {
-    println("update:"+isLocal);
-    
-    if( coordMap.size() <= 0){
+
+
+    if ( coordMap.size() <= 0) {
       onConnect();
     }
-    
+
     if (goForward) {
       acceleration();
     }
@@ -125,14 +124,14 @@ class Player {
     if (turnRight) {
       steering(0.05);
     }
-    
+
     location.add(velocity);
     velocity.mult(0.25);
   }
 
 
   void move() {
-    if(isLocal == false){
+    if (isLocal == false) {
       if (keyCode == UP) {
         goForward = true;
       }
@@ -145,8 +144,7 @@ class Player {
       if (keyCode == RIGHT) {
         turnRight = true;
       }
-    }
-    else{
+    } else {
       if (key == 'w'|| key == 'W') {
         goForward = true;
       }
@@ -161,12 +159,10 @@ class Player {
       }
     }
   }
-  
-  
-  
+
   boolean idle() {
-    
-    if(isLocal == false){
+
+    if (isLocal == false) {
       if (keyCode == UP) {
         goForward = false;
       }
@@ -187,8 +183,7 @@ class Player {
         return true;
       }
       return false;
-    }
-    else{
+    } else {
       if (key == 'w'|| key == 'W') {
         goForward = false;
       }
@@ -198,7 +193,7 @@ class Player {
       if (key == 'a'|| key == 'A') {
         turnLeft = false;
       }
-      if (key == 'd'|| key == 'd') {
+      if (key == 'd'|| key == 'D') {
         turnRight = false;
       }
       if (keyCode == 16 && shotFired == false) {
@@ -211,51 +206,49 @@ class Player {
       return false;
     }
   }
-  
-    void setVelocity(int x, int y){
-    location.add(new PVector(x ,y));
+
+  void setVelocity(int x, int y) {
+    location.add(new PVector(x, y));
   }
-  
-  void setLocation(int x, int y){
-   location.x = x;
-   location.y = y;
+
+  void setLocation(int x, int y) {
+    location.x = x;
+    location.y = y;
   }
-  
-  
-  void onConnect(){
+
+
+  void onConnect() {
     for (int i = 0; i < mapTiles.size(); i++) {
-           coordMap.add(Util.numberToCoord(mapTiles.get(i)));
-      
-    }  
+      coordMap.add(Util.numberToCoord(mapTiles.get(i)));
+    }
   }
-  
-  float getHeading(){
-   return heading; 
+
+  float getHeading() {
+    return heading;
   }
-  
-  void setHeading(float heading){
-   this.heading = heading; 
+
+  void setHeading(float heading) {
+    this.heading = heading;
   }
-  
-  int getXLocation(){
-   return int(location.x); 
+
+  int getXLocation() {
+    return int(location.x);
   }
-  
- int getYLocation(){
-   return int(location.y); 
+
+  int getYLocation() {
+    return int(location.y);
   }
-  
- void setLocalPlay(boolean isLocal){
-   this.isLocal = isLocal;
-   println("player class: "+ isLocal);
- }
-  
-  ArrayList<PVector> tilesToCoords(){
+
+  void setLocalPlay(boolean isLocal) {
+    this.isLocal = isLocal;
+    // println("player class: "+ isLocal);
+  }
+
+  ArrayList<PVector> tilesToCoords() {
     ArrayList<PVector> mapCoords = new ArrayList<PVector>();
-   for (int i = 0; i < mapTiles.size(); i++){
-     mapCoords.add(Util.numberToCoord(mapTiles.get(i)));
-   }
-   return mapCoords;
+    for (int i = 0; i < mapTiles.size(); i++) {
+      mapCoords.add(Util.numberToCoord(mapTiles.get(i)));
+    }
+    return mapCoords;
   }
-  
 }
