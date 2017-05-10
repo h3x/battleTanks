@@ -13,7 +13,8 @@ class Player {
   boolean turnLeft;
   boolean turnRight;
   boolean shotFired;
-
+  boolean isLocal = false;
+  
   float angle;
   float heading;
   
@@ -30,6 +31,7 @@ class Player {
     acceleration = new PVector(0, 0);
     heading = 0;
     tileSize = Util.tileSize;
+   
     
     coordMap = new ArrayList<PVector>();
     for (int i = 0; i < mapTiles.size(); i++) {
@@ -105,7 +107,8 @@ class Player {
   
   
   void update() {
-    //println(mapTiles.size());
+    println("update:"+isLocal);
+    
     if( coordMap.size() <= 0){
       onConnect();
     }
@@ -129,44 +132,84 @@ class Player {
 
 
   void move() {
-    
-    if (keyCode == UP) {
-      goForward = true;
+    if(isLocal == false){
+      if (keyCode == UP) {
+        goForward = true;
+      }
+      if (keyCode == DOWN) {
+        goBack = true;
+      }
+      if (keyCode == LEFT) {
+        turnLeft = true;
+      }
+      if (keyCode == RIGHT) {
+        turnRight = true;
+      }
     }
-    if (keyCode == DOWN) {
-      goBack = true;
-    }
-    if (keyCode == LEFT) {
-      turnLeft = true;
-    }
-    if (keyCode == RIGHT) {
-      turnRight = true;
+    else{
+      if (key == 'w'|| key == 'W') {
+        goForward = true;
+      }
+      if (key == 's'|| key == 'S') {
+        goBack = true;
+      }
+      if (key == 'a'|| key == 'A') {
+        turnLeft = true;
+      }
+      if (key == 'd'|| key == 'd') {
+        turnRight = true;
+      }
     }
   }
   
   
+  
   boolean idle() {
     
-    if (keyCode == UP) {
-      goForward = false;
+    if(isLocal == false){
+      if (keyCode == UP) {
+        goForward = false;
+      }
+      if (keyCode == DOWN) {
+        goBack = false;
+      }
+      if (keyCode == LEFT) {
+        turnLeft = false;
+      }
+      if (keyCode == RIGHT) {
+        turnRight = false;
+      }
+      if (keyCode == ' ' && shotFired == false) {
+        tankShot.play();
+        shell.add(new Turret(location));
+        shotFired = true;
+        tankShot.rewind();
+        return true;
+      }
+      return false;
     }
-    if (keyCode == DOWN) {
-      goBack = false;
+    else{
+      if (key == 'w'|| key == 'W') {
+        goForward = false;
+      }
+      if (key == 's'|| key == 'S') {
+        goBack = false;
+      }
+      if (key == 'a'|| key == 'A') {
+        turnLeft = false;
+      }
+      if (key == 'd'|| key == 'd') {
+        turnRight = false;
+      }
+      if (keyCode == 16 && shotFired == false) {
+        tankShot.play();
+        enemyShell.add(new Turret(location, heading));
+        shotFired = true;
+        tankShot.rewind();
+        return true;
+      }
+      return false;
     }
-    if (keyCode == LEFT) {
-      turnLeft = false;
-    }
-    if (keyCode == RIGHT) {
-      turnRight = false;
-    }
-    if (keyCode == ' ' && shotFired == false) {
-      tankShot.play();
-      shell.add(new Turret(location));
-      shotFired = true;
-      tankShot.rewind();
-      return true;
-    }
-    return false;
   }
   
     void setVelocity(int x, int y){
@@ -201,6 +244,11 @@ class Player {
  int getYLocation(){
    return int(location.y); 
   }
+  
+ void setLocalPlay(boolean isLocal){
+   this.isLocal = isLocal;
+   println("player class: "+ isLocal);
+ }
   
   ArrayList<PVector> tilesToCoords(){
     ArrayList<PVector> mapCoords = new ArrayList<PVector>();

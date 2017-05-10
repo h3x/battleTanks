@@ -34,7 +34,8 @@ int pe = 0;
 Map map;
 Menu menu;
 
-int[] tmp = {191, 225, 259, 293, 327, 361, 397, 433, 469, 505, 541, 577, 613, 579, 545, 511, 477, 443, 375, 409, 123, 157, 159, 195, 231, 267, 303, 339};
+int[] tmp = {225, 259, 327, 328, 329, 330, 295, 260, 265, 335, 336, 337, 338, 302, 301, 266, 326, 292, 258, 229, 264, 299, 334, 661, 660, 659, 178, 179, 180, 145, 110, 694, 729, 431, 432, 436, 438, 442, 443, 439, 437, 435, 680, 682, 681, 684, 683, 293, 679, 685, 472, 507, 545, 580, 546, 581, 539, 538, 573, 574, 17, 52, 122, 87, 597, 632, 667, 703, 702, 704, 669, 634, 599, 598, 633, 668, 135, 136, 137, 172, 207, 242, 241, 206, 171, 170, 205, 240, 318, 353, 354, 390, 389, 388, 416, 451, 486, 415, 414, 450, 114, 115, 117, 116, 656, 655, 654, 708, 709, 674, 673, 237, 236, 201, 202, 787, 82, 822};
+//int[] tmp = {};
 ArrayList<Integer> mapTiles = new ArrayList<Integer>();
 float tileSize = 30;
 float tileX;
@@ -42,6 +43,8 @@ float tileY;
 float tilesAcross;
 float tilesDown;
 int tileNumber;
+boolean isLocal = false;
+PVector player2LocalCoords = new PVector(960, 630);
 
 //Music player
 Minim minim = new Minim(this);
@@ -89,10 +92,8 @@ void setup(){
   map = new Map(mapTiles);
   tilesAcross = width / tileSize;
 
-
-  
-  player = new Player("KV-2_preview.png", 50, 50);
-  player2 = new Player("KV-2_preview.png", -500, -500); //initalise player 2 off screen till they load in
+  player = new Player("KV-2_preview.png", 60, 60);
+  player2 = new Player("KV-2_preview.png", -500, -500); //initalise player 2 off screen till they load in (960, 630)
 }
 
 
@@ -110,8 +111,7 @@ void draw(){
   
   else{
     //setup networking stuff (runs once only when the network config is set up via the menu)
-     
-    isServer = menu.getServerStatus();
+    
     if (!Util.networkSetup && Util.setup) {
       println("setup");
       if (isServer) {
@@ -126,10 +126,16 @@ void draw(){
       }
       Util.setup = false;
       Util.networkSetup = true;
+      isServer = menu.getServerStatus();
+      if(menu.isLocal() == true){
+       player2.setLocalPlay(true);
+       player2.setLocation((int)player2LocalCoords.x, (int)player2LocalCoords.y);
+      }
      
     }
     
   
+      println("local:" + menu.isLocal());
   //The real draw loop starts here after network stuff is setup
   for (int i = shell.size()-1; i >= 0; i--) {
     Turret s = shell.get(i);
@@ -249,11 +255,16 @@ void keyPressed(){
   else{
     //add if statement here to check for localPlay boolean, and player2.moveLocal() will be called (need to create that with different key bondiongs)
    player.move();
+   player2.move();
+   if(key == 'a'){
+    println(mapTiles); 
+   }
   }
 }
 
 
 void keyReleased(){
+  player2.idle();
   if( !Util.onMenu && player.idle()){
     if (isServer) {
       //println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
@@ -280,4 +291,14 @@ void serverEvent(Server someServer, Client someClient) {
 
   s.write("#M" + sendMap + "\n");
 
+}
+
+void mousePressed(){
+ if(mapTiles.indexOf(Util.coordToNumber(new PVector(mouseX, mouseY))) < 0){
+   map.newTile(mouseX, mouseY); 
+ }
+ else{
+  map.remTile(mouseX, mouseY); 
+ }
+ 
 }
