@@ -3,6 +3,7 @@
 class Turret {
   
   PVector location;
+  PVector acceleration;
   PVector velocity;
   
   float radius;
@@ -10,19 +11,25 @@ class Turret {
   public Turret(PVector location) {
     this.location = location.copy();
     velocity = PVector.fromAngle(player.heading + PI/2);
-    velocity.mult(25);
+    
     
   }
   
+    public Turret(PVector location, float heading) {
+    this.location = location.copy();
+    velocity = PVector.fromAngle(heading + PI/2);
+    
+    
+  }
   
   void display() {
     //TODO
     //Replace ellipse with an image of a tank shell
-    println(location);
+   // println(location);
     pushMatrix();
     //pushStyle();
     translate(location.x, location.y);
-    stroke(0, 0, 0);
+    stroke(255);
     //fill(87, 87, 87);
     fill(255);
     ellipse(0,0, radius+5, radius+5);
@@ -33,7 +40,7 @@ class Turret {
   
   
   void update() {
-    
+    velocity.setMag(20);    
     this.location.add(velocity);
     
   }
@@ -51,5 +58,9 @@ class Turret {
       return true;
     }
     return false;
+  }
+  
+  PVector getLocation(){
+   return location; 
   }
 }

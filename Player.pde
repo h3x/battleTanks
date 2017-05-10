@@ -145,7 +145,7 @@ class Player {
   }
   
   
-  void idle() {
+  boolean idle() {
     
     if (keyCode == UP) {
       goForward = false;
@@ -164,7 +164,9 @@ class Player {
       shell.add(new Turret(location));
       shotFired = true;
       tankShot.rewind();
+      return true;
     }
+    return false;
   }
   
     void setVelocity(int x, int y){

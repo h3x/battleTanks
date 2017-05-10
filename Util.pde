@@ -6,7 +6,7 @@ static class Util {
   static String IP = "";
   static boolean networkSetup = false;
   static boolean setup = true;
-  static String hostname = "localhost";
+  static String hostname = "";
   
   
   

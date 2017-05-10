@@ -1,5 +1,8 @@
 import ddf.minim.*;
 import processing.net.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 
 /* Credits
 
@@ -51,6 +54,7 @@ Player player2; //remote player
 //Turret turret;
 
 ArrayList<Turret> shell;
+ArrayList<Turret> enemyShell;
 //ArrayList<Turret> rocket;
 
 boolean onMenu;
@@ -66,6 +70,8 @@ void setup(){
   size(1050,720);
 
   shell = new ArrayList<Turret>();
+  enemyShell = new ArrayList<Turret>();
+  
   //rocket = new ArrayList<Turret>();
   frameRate(30);
   menu = new Menu();
@@ -94,9 +100,17 @@ void draw(){
   background(51);
   if(Util.onMenu){
    menu.display();
-  }
+   //pulls local hostname
+    try{
+          InetAddress myIp = InetAddress.getLocalHost();
+          Util.hostname = myIp.getHostName();
+    }
+    catch (UnknownHostException e){}
+    }
+  
   else{
     //setup networking stuff (runs once only when the network config is set up via the menu)
+     
     isServer = menu.getServerStatus();
     if (!Util.networkSetup && Util.setup) {
       println("setup");
@@ -112,6 +126,7 @@ void draw(){
       }
       Util.setup = false;
       Util.networkSetup = true;
+     
     }
     
   
@@ -121,8 +136,19 @@ void draw(){
     s.update();
     s.display();
     
-    if (s.wrap() == true) {
+    if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) {
       shell.remove(i);
+      break;
+    }
+  }
+  
+    for (int i = enemyShell.size()-1; i >= 0; i--) {
+    Turret e = enemyShell.get(i);
+    e.update();
+    e.display();
+    println(Util.coordToNumber(e.getLocation()));
+    if (e.wrap() == true || mapTiles.indexOf(Util.coordToNumber(e.getLocation())) >= 0) {
+      enemyShell.remove(i);
       break;
     }
   }
@@ -210,7 +236,10 @@ void parse(String inString) {
   } else if (inString.charAt(1) == 'M') {
     map.decodeMap(inString);
     print("Map data: " + inString) ;
+  } else if (inString.charAt(1) == 'B'){
+     enemyShell.add(new Turret(player2.location, player2.getHeading()));
   }
+   
 }
 
 void keyPressed(){
@@ -225,7 +254,15 @@ void keyPressed(){
 
 
 void keyReleased(){
-  player.idle(); 
+  if( !Util.onMenu && player.idle()){
+    if (isServer) {
+      //println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
+      s.write("#B\n");
+    } else {
+      //println(isServer);
+      c.write("#B\n");
+    } 
+  }
 }
 
 // when first connecting, server sends initial co-ords of both players 
