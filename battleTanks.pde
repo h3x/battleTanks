@@ -44,7 +44,8 @@ float tilesAcross;
 float tilesDown;
 int tileNumber;
 boolean isLocal = false;
-PVector player2LocalCoords = new PVector(960, 630);
+//PVector player2LocalCoords = new PVector(960, 630);
+PVector player2LocalCoords = new PVector(60, 225);
 
 //Music player
 Minim minim = new Minim(this);
@@ -92,8 +93,8 @@ void setup(){
   map = new Map(mapTiles);
   tilesAcross = width / tileSize;
 
-  player = new Player("KV-2_preview.png", 60, 60);
-  player2 = new Player("KV-2_preview.png", -500, -500); //initalise player 2 off screen till they load in (960, 630)
+  player = new Player("KV-2_preview.png", 60, 60, 20, 20);
+  player2 = new Player("KV-2_preview.png", -500, -500, 20, 20); //initalise player 2 off screen till they load in (960, 630)
 }
 
 
@@ -140,14 +141,14 @@ void draw(){
      
     }
     
-  
+    
   //println("local:" + menu.isLocal());
   //The real draw loop starts here after network stuff is setup
   for (int i = shell.size()-1; i >= 0; i--) {
     Turret s = shell.get(i);
     s.update();
     s.display();
-    
+    s.checkCollisions(player2);
     if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) {
       shell.remove(i);
       break;
@@ -158,7 +159,8 @@ void draw(){
     Turret e = enemyShell.get(i);
     e.update();
     e.display();
-    println(Util.coordToNumber(e.getLocation()));
+    e.checkCollisions(player);
+    //println(Util.coordToNumber(e.getLocation()));
     if (e.wrap() == true || mapTiles.indexOf(Util.coordToNumber(e.getLocation())) >= 0) {
       enemyShell.remove(i);
       break;
@@ -181,10 +183,36 @@ void draw(){
   player.display();
   player2.display();
   
-  
-  
+    
   }
 }
+
+
+boolean collision(float sx, float sy, float radius, float tx, float ty, float tw, float th) {
+  
+  float tempX = sx;
+  float tempY = sy;
+  
+  if (sx < tx) {
+    tempX = tx;
+  } else if (sx > tx + tw) {
+  tempX = tx + tw;
+  } if (sy < ty) {
+    tempY = ty;
+  } else if (sy > ty + th)
+  tempY = ty + th;
+  
+  float distX = sx - tempX;
+  float distY = sy - tempY;
+  float distance = sqrt((distX * distX) + (distY * distY));
+  
+  if (distance <= radius) {
+    println("Hit!");
+    return true;
+  }
+  return false;
+}
+
 
 void readNetwork(){
    //if this is the client, read the data sent over the network
@@ -243,13 +271,13 @@ void parse(String inString) {
       player2.setLocation(newX, newY);
       player2.setHeading(newHeading);
     }
-
+    
     println("Player Data: " + inString);
   } else if (inString.charAt(1) == 'M') {
     map.decodeMap(inString);
     print("Map data: " + inString) ;
   } else if (inString.charAt(1) == 'B'){
-     enemyShell.add(new Turret(player2.location, player2.getHeading()));
+     enemyShell.add(new Turret(player2.location, player2.getHeading(), 5));
   }
    
 }

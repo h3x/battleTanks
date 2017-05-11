@@ -17,6 +17,9 @@ class Player {
 
   float angle;
   float heading;
+  
+  float x, y;
+  float w, h;
 
   ArrayList<PVector> coordMap;
 
@@ -24,14 +27,17 @@ class Player {
 
   //ArrayList<PVector> mapCoords;
 
-  public Player(String file, int x, int y) {
+  public Player(String file, float x, float y, float w, float h) {
     tank = loadImage(file);
     location = new PVector(x, y);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
     heading = 0;
     tileSize = Util.tileSize;
-
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
 
     coordMap = new ArrayList<PVector>();
     for (int i = 0; i < mapTiles.size(); i++) {
@@ -97,7 +103,7 @@ class Player {
     popMatrix();
 
     stroke(255, 0, 0);
-    //rect(location.x-10,location.y- 10, 20,20);
+    rect(location.x-10,location.y- 10, w, h);
 
     if (shotFired == true && frameCount % 100 == 0) {
       shotFired = false;
@@ -177,7 +183,7 @@ class Player {
       }
       if (keyCode == ' ' && shotFired == false) {
         tankShot.play();
-        shell.add(new Turret(location));
+        shell.add(new Turret(getXLocation(), getYLocation(), 5, player.heading));
         shotFired = true;
         tankShot.rewind();
         return true;
@@ -198,7 +204,7 @@ class Player {
       }
       if (keyCode == 16 && shotFired == false) {
         tankShot.play();
-        enemyShell.add(new Turret(location, heading));
+        enemyShell.add(new Turret(location, heading, 5));
         shotFired = true;
         tankShot.rewind();
         return true;

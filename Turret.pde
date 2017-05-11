@@ -6,20 +6,30 @@ class Turret {
   PVector acceleration;
   PVector velocity;
   
-  float radius;
+  boolean hit = false;
   
-  public Turret(PVector location) {
-    this.location = location.copy();
-    velocity = PVector.fromAngle(player.heading + PI/2);
-    
+  //float radius;
+  
+  float x, y;
+  float r;
+  
+  public Turret(float x, float y, float r, float heading) {
+    this.location = new PVector(x, y);
+    velocity = PVector.fromAngle(heading + PI/2);
+    this.x = x;
+    this.y = y;
+    this.r = r;
     
   }
   
-    public Turret(PVector location, float heading) {
+    public Turret(PVector location, float heading, float r) {
     this.location = location.copy();
     velocity = PVector.fromAngle(heading + PI/2);
-    
-    
+    this.r = r;
+  }
+  
+  void checkCollisions(Player p) {
+    hit = collision(getLocation().x, getLocation().y, r, p.x, p.y, p.w, p.h);
   }
   
   void display() {
@@ -32,7 +42,7 @@ class Turret {
     stroke(255);
     //fill(87, 87, 87);
     fill(255);
-    ellipse(0,0, radius+5, radius+5);
+    ellipse(0,0, r, r);
     popMatrix();
     //popStyle();
     
@@ -47,14 +57,14 @@ class Turret {
 
   
   boolean wrap() {
-    if (location.x > width + this.radius) {
+    if (location.x > width + this.r) {
       return true;
-    } else if (this.location.x < -this.radius) {
+    } else if (this.location.x < -this.r) {
       return true;
     }
-    if (location.y > height + this.radius) {
+    if (location.y > height + this.r) {
       return true;
-    } else if (this.location.y < -this.radius) {
+    } else if (this.location.y < -this.r) {
       return true;
     }
     return false;
