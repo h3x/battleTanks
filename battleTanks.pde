@@ -20,6 +20,11 @@ https://opengameart.org/users/elnineo
 
 */
 
+
+//constants
+final int shotDamage = 60;
+
+
 //Network stuff
 Server s;
 Client c;
@@ -119,7 +124,7 @@ void draw(){
     }
     
     
-  else{
+  else if (!isLocal){
     //setup networking stuff (runs once only when the network config is set up via the menu)
     
     if (!Util.networkSetup && Util.setup) {
@@ -156,10 +161,13 @@ void draw(){
     s.checkCollisions(player2);
     if (s.hit == true) {
       shell.remove(i);
-      player2.health -= 10;
+      player2.health -= shotDamage;
+      if(player2.health < 0){
+       player2.health = 0; 
+      }
       println("P2:",player2.health);
     }
-    if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) {
+    if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) { //issue here <<----
       shell.remove(i);
       break;
     }
@@ -172,7 +180,10 @@ void draw(){
     e.checkCollisions(player);
     if (e.hit == true) {
       enemyShell.remove(i);
-      player.health -= 10;
+      player.health -= shotDamage;
+      if(player.health < 0){
+       player.health = 0; 
+      }
       println("P1:",player.health);
     }
     //println(Util.coordToNumber(e.getLocation()));

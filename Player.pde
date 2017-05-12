@@ -117,7 +117,7 @@ class Player {
   
   void explosion() {
     
-    if (health == 0) {
+    if (health <= 0) {
     
       int w = 256;
       int x = counter % 8 * w;
@@ -206,7 +206,7 @@ class Player {
       if (key == 'a'|| key == 'A') {
         turnLeft = true;
       }
-      if (key == 'd'|| key == 'd') {
+      if (key == 'd'|| key == 'D') {
         turnRight = true;
       }
     }
