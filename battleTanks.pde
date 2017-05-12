@@ -150,6 +150,8 @@ void draw(){
     s.checkCollisions(player2);
     if (s.hit == true) {
       shell.remove(i);
+      player2.health -= 10;
+      println("P2:",player2.health);
     }
     if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) {
       shell.remove(i);
@@ -164,6 +166,8 @@ void draw(){
     e.checkCollisions(player);
     if (e.hit == true) {
       enemyShell.remove(i);
+      player.health -= 10;
+      println("P1:",player.health);
     }
     //println(Util.coordToNumber(e.getLocation()));
     if (e.wrap() == true || mapTiles.indexOf(Util.coordToNumber(e.getLocation())) >= 0) {
@@ -177,6 +181,8 @@ void draw(){
   map.drawMap();   
   player.update();
   player2.update();
+  player.damage(20, 20, 1, 20, 40);
+  player2.damage(930, 20, 2, 930, 40);
   
   try{
     writeNetwork(); 

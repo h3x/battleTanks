@@ -20,6 +20,9 @@ class Player {
   
   float x, y;
   float w, h;
+  
+  int health;
+  int decrementHealth;
 
   ArrayList<PVector> coordMap;
 
@@ -33,12 +36,13 @@ class Player {
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
     heading = 0;
+    health = 100;
     tileSize = Util.tileSize;
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
-
+    
     coordMap = new ArrayList<PVector>();
     for (int i = 0; i < mapTiles.size(); i++) {
       coordMap.add(Util.numberToCoord(mapTiles.get(i)));
@@ -68,7 +72,9 @@ class Player {
 
 
   void steering(float angle) {
+    
     heading += angle;
+    
   }
 
 
@@ -88,6 +94,21 @@ class Player {
       }
     }
     return true;
+  }
+  
+  
+  void damage(int x, int y, int p, int q, int r) {
+    
+    pushStyle();
+    fill(255,0,0);
+    rect(x, y, health, 10);
+    popStyle();
+    pushStyle();
+    fill(255);
+    textSize(20);
+    text("Player "+p, q, r);
+    popStyle();
+    
   }
 
 
