@@ -14,6 +14,10 @@ Tank images approved for public use by creator.
 Original content creator: Remos Turcuman
 https://opengameart.org/content/tank-pack-bleeds-game-art
 
+Explosion sprite sheet approved for public use by creator.
+Original content creator: elnineo
+https://opengameart.org/users/elnineo
+
 */
 
 //Network stuff
@@ -44,7 +48,8 @@ float tilesAcross;
 float tilesDown;
 int tileNumber;
 boolean isLocal = false;
-PVector player2LocalCoords = new PVector(960, 630);
+//PVector player2LocalCoords = new PVector(960, 630);
+PVector player2LocalCoords = new PVector(60, 200);
 
 //Music player
 Minim minim = new Minim(this);
@@ -92,8 +97,9 @@ void setup(){
   map = new Map(mapTiles);
   tilesAcross = width / tileSize;
 
-  player = new Player("KV-2_preview.png", 60, 60, 20, 20);
-  player2 = new Player("VK.3601h_preview.png", -500, -500, 20, 20); //initalise player 2 off screen till they load in (960, 630)
+  player = new Player("KV-2_preview.png", "Explosion_001_Tile_8x8_256x256.png", 60, 60, 20, 20);
+  player2 = new Player("VK.3601h_preview.png", "Explosion_001_Tile_8x8_256x256.png", -500, -500, 20, 20); //initalise player 2 off screen till they load in (960, 630)
+  
 }
 
 

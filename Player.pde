@@ -22,15 +22,16 @@ class Player {
   float w, h;
   
   int health;
-  int decrementHealth;
+  int counter;
 
   ArrayList<PVector> coordMap;
-
+  
   PImage tank;
+  PImage explosion;
 
   //ArrayList<PVector> mapCoords;
 
-  public Player(String file, float x, float y, float w, float h) {
+  public Player(String file, String file2, float x, float y, float w, float h) {
     tank = loadImage(file);
     location = new PVector(x, y);
     velocity = new PVector(0, 0);
@@ -42,6 +43,8 @@ class Player {
     this.y = y;
     this.w = w;
     this.h = h;
+    
+    explosion = loadImage(file2);
     
     coordMap = new ArrayList<PVector>();
     for (int i = 0; i < mapTiles.size(); i++) {
@@ -110,10 +113,31 @@ class Player {
     popStyle();
     
   }
+  
+  
+  void explosion() {
+    
+    if (health == 0) {
+    
+      int w = 256;
+      int x = counter % 8 * w;
+      int y = counter / 4 * w;
+      
+      pushMatrix();
+      translate(location.x-62.5, location.y-62.5);
+      scale(0.5, 0.5);
+      copy(explosion, x, y, w, w, 0, 0, w, w);
+      counter += 1;
+      popMatrix();
+      if (counter >= 64) {
+        return;
+      }
+    }
+  }
 
 
   void display() {
-
+    
     pushMatrix();
     imageMode(CENTER);
 
@@ -129,6 +153,7 @@ class Player {
     if (shotFired == true && frameCount % 100 == 0) {
       shotFired = false;
     }
+    explosion();
   }
 
 
