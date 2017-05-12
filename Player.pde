@@ -14,7 +14,8 @@ class Player {
   boolean turnRight;
   boolean shotFired;
   boolean isLocal = false;
-
+  boolean visible = true;
+  
   float angle;
   float heading;
   
@@ -118,7 +119,7 @@ class Player {
   void explosion() {
     
     if (health <= 0) {
-    
+      visible = false;
       int w = 256;
       int x = counter % 8 * w;
       int y = counter / 4 * w;
@@ -130,8 +131,14 @@ class Player {
       counter += 1;
       popMatrix();
       if (counter >= 64) {
+        location = getRandomLocation();
+        health = 100;
+        visible = true;
         return;
       }
+    }
+    else{
+     counter = 0; 
     }
   }
 
@@ -144,7 +151,9 @@ class Player {
     translate(location.x, location.y);
     rotate(heading);
     scale(0.2, 0.15);
-    image(tank, 0, 0);
+    if(visible){
+      image(tank, 0, 0);
+    }
     popMatrix();
 
     //stroke(255, 0, 0);
@@ -227,7 +236,7 @@ class Player {
       if (keyCode == RIGHT) {
         turnRight = false;
       }
-      if (keyCode == ' ' && shotFired == false) {
+      if (keyCode == ' ' && shotFired == false && visible) {
         tankShot.play();
         shell.add(new Turret(getXLocation(), getYLocation(), 5, player.heading));
         shotFired = true;
@@ -282,7 +291,18 @@ class Player {
   void setHeading(float heading) {
     this.heading = heading;
   }
-
+  
+  PVector getRandomLocation(){
+    PVector rLoc;
+    while(true){
+      rLoc = new PVector(floor(random(width)), floor(random(height)));
+      if( mapTiles.indexOf(Util.coordToNumber(rLoc)) < 0 ){
+       return rLoc; 
+      }
+    }
+    
+  }
+  
   int getXLocation() {
     return int(location.x);
   }
@@ -296,11 +316,4 @@ class Player {
     // println("player class: "+ isLocal);
   }
 
-  ArrayList<PVector> tilesToCoords() {
-    ArrayList<PVector> mapCoords = new ArrayList<PVector>();
-    for (int i = 0; i < mapTiles.size(); i++) {
-      mapCoords.add(Util.numberToCoord(mapTiles.get(i)));
-    }
-    return mapCoords;
-  }
 }

@@ -121,10 +121,19 @@ void draw(){
     isServer = menu.getServerStatus();
     isLocal = menu.isLocal();
     
-    }
+    }    
+  else if (isLocal && Util.setup){
+    for (int i = 0; i < tmp.length; i++) {
+      mapTiles.add(tmp[i]);
+    }    
     
-    
-  else if (!isLocal){
+    player2.setLocalPlay(true);
+    player2.setLocation((int)player2LocalCoords.x, (int)player2LocalCoords.y);
+    Util.setup = false;
+
+  }
+  
+  else{
     //setup networking stuff (runs once only when the network config is set up via the menu)
     
     if (!Util.networkSetup && Util.setup) {
@@ -142,12 +151,6 @@ void draw(){
       Util.setup = false;
       Util.networkSetup = true;
       isServer = menu.getServerStatus();
-     
-      if(isLocal == true){
-       player2.setLocalPlay(true);
-       player2.setLocation((int)player2LocalCoords.x, (int)player2LocalCoords.y);
-      }
-       println("setup: " + isLocal);
      
     }
     
@@ -193,20 +196,23 @@ void draw(){
     }
   }
 
+  map.drawMap();  
   
-  readNetwork();
-  map.drawMap();   
+  if(!isLocal){
+    readNetwork();
+    
+    try{
+      writeNetwork(); 
+    }
+    catch (NullPointerException npe){
+    //This stops a program crash if there is a brief interuption in the network connection
+    }
+  }
+  
   player.update();
   player2.update();
   player.damage(20, 20, 1, 20, 40);
   player2.damage(930, 20, 2, 930, 40);
-  
-  try{
-    writeNetwork(); 
-  }
-  catch (NullPointerException npe){
-  //This stops a program crash if there is a brief interuption in the network connection
-  }
   
   player.display();
   player2.display();
@@ -333,7 +339,7 @@ void keyReleased(){
     player2.idle();
   }
   
-  if( !Util.onMenu && player.idle()){
+  if( !Util.onMenu && player.idle() && !isLocal){
     if (isServer) {
       //println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
       s.write("#B\n");
