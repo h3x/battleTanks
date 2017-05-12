@@ -29,8 +29,10 @@ class Turret {
   }
   
   void checkCollisions(Player p) {
+    
     hit = collision(getLocation().x, getLocation().y, r, p.getXLocation(), p.getYLocation(), p.w, p.h);
-  }
+
+}
   
   void display() {
     //TODO

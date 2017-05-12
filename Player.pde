@@ -102,8 +102,8 @@ class Player {
     image(tank, 0, 0);
     popMatrix();
 
-    stroke(255, 0, 0);
-    rect(location.x-10,location.y- 10, w, h);
+    //stroke(255, 0, 0);
+    //rect(location.x-10,location.y- 10, w, h);
 
     if (shotFired == true && frameCount % 100 == 0) {
       shotFired = false;

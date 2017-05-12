@@ -44,8 +44,7 @@ float tilesAcross;
 float tilesDown;
 int tileNumber;
 boolean isLocal = false;
-//PVector player2LocalCoords = new PVector(960, 630);
-PVector player2LocalCoords = new PVector(60, 225);
+PVector player2LocalCoords = new PVector(960, 630);
 
 //Music player
 Minim minim = new Minim(this);
@@ -94,7 +93,7 @@ void setup(){
   tilesAcross = width / tileSize;
 
   player = new Player("KV-2_preview.png", 60, 60, 20, 20);
-  player2 = new Player("KV-2_preview.png", -500, -500, 20, 20); //initalise player 2 off screen till they load in (960, 630)
+  player2 = new Player("VK.3601h_preview.png", -500, -500, 20, 20); //initalise player 2 off screen till they load in (960, 630)
 }
 
 
@@ -149,6 +148,9 @@ void draw(){
     s.update();
     s.display();
     s.checkCollisions(player2);
+    if (s.hit == true) {
+      shell.remove(i);
+    }
     if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) {
       shell.remove(i);
       break;
@@ -160,6 +162,9 @@ void draw(){
     e.update();
     e.display();
     e.checkCollisions(player);
+    if (e.hit == true) {
+      enemyShell.remove(i);
+    }
     //println(Util.coordToNumber(e.getLocation()));
     if (e.wrap() == true || mapTiles.indexOf(Util.coordToNumber(e.getLocation())) >= 0) {
       enemyShell.remove(i);
