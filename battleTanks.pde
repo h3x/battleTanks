@@ -272,10 +272,10 @@ void parse(String inString) {
       player2.setHeading(newHeading);
     }
     
-    println("Player Data: " + inString);
+    //println("Player Data: " + inString);
   } else if (inString.charAt(1) == 'M') {
     map.decodeMap(inString);
-    print("Map data: " + inString) ;
+    //print("Map data: " + inString) ;
   } else if (inString.charAt(1) == 'B'){
      enemyShell.add(new Turret(player2.location, player2.getHeading(), 5));
   }
