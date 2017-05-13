@@ -271,7 +271,6 @@ class Player {
     
     pushMatrix();
     imageMode(CENTER);
-
     translate(location.x, location.y);
     rotate(heading);
     scale(0.2, 0.15);
@@ -528,14 +527,21 @@ class Player {
  *
  **********************************************************************************/
   PVector getRandomLocation(){
-    PVector rLoc;
-    while(true){
-      rLoc = new PVector(floor(random(width)), floor(random(height)));
-      if( mapTiles.indexOf(Util.coordToNumber(rLoc)) < 0 ){
-       return rLoc; 
+    PVector rLoc = new PVector(0,0);
+    boolean insideATile = false;
+    while(!insideATile){
+      insideATile = true;
+      rLoc = new PVector(floor(random(width)), floor(random(height)));      
+       for (int i = 0; i< coordMap.size(); i++) {
+        if (rLoc.x > coordMap.get(i).x -15 && rLoc.x < coordMap.get(i).x + tileSize + 15) {
+          if (rLoc.y > coordMap.get(i).y - 15 && rLoc.y < coordMap.get(i).y + tileSize + 15) {
+           insideATile = false;
+          }
+        }
+       }
+      
       }
-    }
-    
+      return rLoc; 
   }
   
 /**********************************************************************************
