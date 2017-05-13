@@ -4,11 +4,32 @@
  * Authors:   Zac Madden
  *            Adam Austin
  *
- * Function:  TODO
+ * Function:  Creates and controlls player objects
  *             
- * Imports:   TODO
+ * Imports:   None
  *
- * Methods:   TODO
+ * Methods:   acceleration()     - Moves tank forward or backward on keyPress event
+ *            deceleration()     - Stops tank on keyRelease
+ *            steering()         - Rotates tank
+ *            walls()            - Checks the tank will not move into a wall and blocks that direction if true (uses a lookahead technique)
+ *            damage()           - Draws damage meter 
+ *            explosion()        - Draws explosions when player dies
+ *            display()          - Draws the tank
+ *            checkCollisions()  - Checks for tank on tank collision
+ *            update()           - Update the position of the tank object
+ *            move()             - Runs on the keyPressed event. Used to initiate movement
+ *            idle()             - Runs on keyReleased event. Used to terminate movement
+ *            setVelocity()      - Sets the velocity of the tank
+ *            setLocation()      - Sets the x,y location on the tank (used for network play)
+ *            onConnect()        - Runs after the client connects to generate the map from information sent by the server 
+ *            getHeading()       - Gets the heading of the tank (used for network play)
+ *            setHeading()       - Sets the heading of the tank (used for network play)
+ *            getRandomLocation()- Returns a random x,y location for respawn
+ *            getXLocation()     - Returns the location x coord
+ *            getYLocation()     - Returns the location y coord
+ *            setLocalPlay()     - Sets the onLocal boolean to true for local play          
+ *
+ *            
  *
  **********************************************************************************/
 
@@ -37,26 +58,28 @@ class Player {
   
   int health;
   int counter;
+  int explosionFrames = 120;
 
   ArrayList<PVector> coordMap;
   
   PImage tank;
   PImage explosion;
 
-  //ArrayList<PVector> mapCoords;
-
 
  /**********************************************************************************
- * Method:     Constructor
+ * Method:       Constructor
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):    Zac Madden
+ *               Adam Austin
  *
- * Function:   TODO
+ * Function:     Create new tank object
  *             
- * Parameters: TODO
- *
- * Notes:      TODO
+ * Parameters:   file   - File reference of the tank
+ *               file2  - File reference of the explosion effect
+ *               x      - X coord for location
+ *               y      - Y coord for location
+ *               w      - Width of the collision detection area
+ *               h      - Height of the collision detection area
  *
  **********************************************************************************/
   public Player(String file, String file2, float x, float y, float w, float h) {
@@ -82,15 +105,16 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     acceleration()
+ * Method:         acceleration()
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):      Zac Madden
+ *                 Adam Austin
  *
- * Function:   TODO
- *
+ * Function:       Accelerates the player
  *             
- * Parameters: None
+ * Parameters:     None
+ *
+ * Return values:  None
  *
  **********************************************************************************/
   void acceleration() {
@@ -105,15 +129,17 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     deceleration()
+ * Method:         deceleration()
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):      Zac Madden
+ *                 Adam Austin
  *
- * Function:   TODO
+ * Function:       Stops accelerating the player
  *
  *             
- * Parameters: None
+ * Parameters:     None
+ *
+ * Return values:  None
  *
  **********************************************************************************/
   void deceleration() {
@@ -128,34 +154,36 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     steering()
+ * Method:         steering()
  *
- * Author(s):  Zac Madden
+ * Author(s):      Zac Madden
  *
+ * Function:       Rotates the player
+ *           
+ * Parameters:     None
  *
- * Function:   TODO
- *
- *             
- * Parameters: None
+ * Return values:  None
  *
  **********************************************************************************/
-  void steering(float angle) {
-    
-    heading += angle;
-    
+  void steering(float angle) {    
+    heading += angle;    
   }
 
 
 /**********************************************************************************
- * Method:     walls()
+ * Method:         walls()
  *
- * Author(s):  Adam Austin
+ * Author(s):      Adam Austin
  *
  *
- * Function:   TODO
+ * Function:       Uses a lookahead technique to figure out if the player _did_ move in the direction intended, will the tank
+ *                 end up inside a wall, returns true if path clear, returns false if there is a wall in the way
  *
  *             
- * Parameters: None
+ * Parameters:     dir - The intended acceleration vector
+ *
+ * Return values:  Boolean - true if all clear
+ *                         - false if wall detected at acceleration vector
  *
  **********************************************************************************/
   boolean walls(PVector dir) {
@@ -165,59 +193,65 @@ class Player {
 
     velCopy.add(dir);
     locCopy.add(velCopy);
-    //noStroke();
+    // for every tile in the wall array...
     for (int i = 0; i< coordMap.size(); i++) {
+      // check for collisions
       if (locCopy.x > coordMap.get(i).x -15 && locCopy.x < coordMap.get(i).x + tileSize + 15) {
         if (locCopy.y > coordMap.get(i).y - 15 && locCopy.y < coordMap.get(i).y + tileSize + 15) {
+          // and return false if a collision is detected 
           return false;
         }
       }
     }
+    // return true if all clear
     return true;
   }
   
   
 /**********************************************************************************
- * Method:     damage()
+ * Method:         damage()
  *
- * Author(s):  Zac Madden
+ * Author(s):      Zac Madden
  *
- * Function:   
+ * Function:       Displays and updates damage meter indicating player health
  *             
- * Parameters: x         - 
- *             y         - 
- *                       - 
- *             playerNum - 
- *             dmgMeterX - 
- *             dmgMeterY - 
+ * Parameters:     dmgMeterX - X location of the damage meter         - 
+ *                 dmgMeterY - Y location of the damage meter    
+ *                 playerNum - Player 1 or player 2
+ *                 dmgTextX  - X location of the text "player"
+ *                 dmgTextY  - Y location of the text "player"
+ *
+ * Return values:  None
  *
  **********************************************************************************/
   
-  void damage(int x, int y, int playerNum, int dmgMeterX, int dmgMeterY) {
+  void damage(int dmgMeterX, int dmgMeterY, int playerNum, int dmgTextX, int dmgTextY) {
     
     pushStyle();
     fill(255,0,0);
-    rect(x, y, health, 10);
+    rect(dmgMeterX, dmgMeterY, health, 10);
     popStyle();
     pushStyle();
     fill(255);
     textSize(20);
-    text("Player "+playerNum, dmgMeterX, dmgMeterY);
+    text("Player "+playerNum, dmgTextX, dmgTextY);
     popStyle();
     
   }
   
   
 /**********************************************************************************
- * Method:     explosion()
+ * Method:        explosion()
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):     Zac Madden
+ *                Adam Austin
  *
- * Function:   Animates an explostion when player health
- *             is less than or equal to zero
+ * Function:      Animates an explostion when player health
+ *                is less than or equal to zero
  *             
- * Parameters: None
+ * Parameters:    None
+ *
+ * Return values: None
  *
  **********************************************************************************/
   void explosion() {
@@ -245,7 +279,7 @@ class Player {
       copy(explosion, sx, sy, sw, sh, 0, 0, sw, sh);
       counter += 1;
       popMatrix();
-      if (counter >= 64) {
+      if (counter >= explosionFrames) {
         location = getRandomLocation();
         health = 100;
         visible = true;
@@ -264,10 +298,11 @@ class Player {
  * Author(s):  Zac Madden
  *             Adam Austin
  *
- * Function:   TODO
- *
+ * Function:   Draw tank object to the screen
  *             
  * Parameters: None
+ * 
+ * Return values: None
  *
  **********************************************************************************/
   void display() {
@@ -283,7 +318,7 @@ class Player {
     popMatrix();
 
     stroke(255, 0, 0);
-    rect(location.x-10,location.y- 10, w, h);
+    //rect(location.x-10,location.y- 10, w, h);
 
     if (shotFired == true && frameCount % 100 == 0) {
       shotFired = false;
@@ -304,14 +339,16 @@ class Player {
  *             
  * Parameters: Player p    - 
  *
+ * Return values: None
+ *
  **********************************************************************************/
   void checkCollisions(Player p) {
-    
     hit = tankOnTankCollision(p.getXLocation(), p.getYLocation(),
                               player2.getXLocation(), player2.getYLocation());
 
 
 }
+
 
 /**********************************************************************************
  * Method:     update()
@@ -319,16 +356,30 @@ class Player {
  * Author(s):  Zac Madden
  *             Adam Austin
  *
- * Function:   TODO
- *
+ * Function:   Runs every frame. Wraps player location around edges of the window, runs player movement methods and updates velocity accordingly
  *             
  * Parameters: None
+ *
+ * Return values: None
  *
  **********************************************************************************/
   void update() {
 
     if ( coordMap.size() <= 0) {
       onConnect();
+    }
+    
+    if(location.x < 0 - (tileSize/2)){
+     location.x = width + (tileSize/2); 
+    }
+    else if(location.x > width + (tileSize/2)){
+     location.x = - (tileSize/2); 
+    }
+    if(location.y < 0 - (tileSize/2)){
+     location.y = height + (tileSize/2); 
+    }
+    else if(location.y > height + (tileSize/2)){
+     location.y = - (tileSize/2); 
     }
     
     if (goForward) {
@@ -357,15 +408,16 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     move()
+ * Method:        move()
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):     Zac Madden
+ *                Adam Austin
  *
- * Function:   TODO
- *
+ * Function:      Moves player on keyPress event
  *             
- * Parameters: None
+ * Parameters:    None
+ *
+ * Return values: None
  *
  **********************************************************************************/
   void move() {
@@ -400,15 +452,18 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     idle()
+ * Method:        idle()
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):     Zac Madden
+ *                Adam Austin
  *
- * Function:   TODO
+ * Function:      Stops moving player on keyRelease event
  *
  *             
- * Parameters: None
+ * Parameters:    None
+ *
+ * Return values: Boolean - true if shot was fired (Used for network play)
+ *                        - false if any other function
  *
  **********************************************************************************/
   boolean idle() {
@@ -458,16 +513,16 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     setVelocity()
+ * Method:        setVelocity()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
- *
- * Function:   TODO
- *
+ * Function:      Adds PVector(x,y) to the current location
  *             
- * Parameters: x         - 
- *             y         - 
+ * Parameters:    x - X variable of the PVector
+ *                y - Y variable of the PVector
+ *
+ * Return values: None
  *
  **********************************************************************************/
   void setVelocity(int x, int y) {
@@ -476,16 +531,16 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     setLocation()
+ * Method:        setLocation()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
- *
- * Function:   TODO
- *
+ * Function:      Set the location directly (used for network play)
  *             
- * Parameters: x         - 
- *             y         - 
+ * Parameters:    x - X coord of the new location
+ *                y - Y coord of the new location
+ *
+ * Return values: None
  *
  **********************************************************************************/
   void setLocation(int x, int y) {
@@ -495,16 +550,16 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     onConnect()
+ * Method:        onConnect()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
- *
- * Function:   TODO
- *
+ * Function:      Runs when client connect to server, and server sents new map data. 
+ *                Converts and adds all map tile addresses to a coordinate version of the map tiles
  *             
- * Parameters: None
+ * Parameters:    None
  *
+ * Return values: None
  **********************************************************************************/
   void onConnect() {
     for (int i = 0; i < mapTiles.size(); i++) {
@@ -514,15 +569,17 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     getHeading()
+ * Method:        getHeading()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
  *
- * Function:   TODO
+ * Function:      Returns the current heading
  *
  *             
- * Parameters: None
+ * Parameters:    None
+ *
+ * Return values: Float - current heading
  *
  **********************************************************************************/
   float getHeading() {
@@ -531,15 +588,15 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     setHeading()
+ * Method:        setHeading()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
+ * Function:      Sets new heading directly
+ *           
+ * Parameters:    heading - The new heading
  *
- * Function:   TODO
- *
- *             
- * Parameters: None
+ * Return values: None
  *
  **********************************************************************************/
   void setHeading(float heading) {
@@ -548,15 +605,15 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     getRandomLocation()
+ * Method:        getRandomLocation()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
- *
- * Function:   TODO
- *
+ * Function:      Gets a new random location when the player is destroyed. Avoids spawning the player inside a wall
  *             
- * Parameters: None
+ * Parameters:    None
+ *
+ * Return values: Returns a random PVector(x,y) location for respawn
  *
  **********************************************************************************/
   PVector getRandomLocation(){
@@ -579,15 +636,15 @@ class Player {
   
   
 /**********************************************************************************
- * Method:     getXLocation()
+ * Method:         getXLocation()
  *
- * Author(s):  Adam Austin
+ * Author(s):      Adam Austin
  *
- *
- * Function:   TODO
- *
+ * Function:       Returns the players x location
  *             
- * Parameters: None
+ * Parameters:     None
+ *
+ * Return values:  Int - The x location coord
  *
  **********************************************************************************/
   int getXLocation() {
@@ -596,15 +653,15 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     getYLocation()
+ * Method:         getYLocation()
  *
- * Author(s):  Adam Austin
+ * Author(s):      Adam Austin
  *
- *
- * Function:   TODO
- *
+ * Function:       Returns the players y location
  *             
- * Parameters: None
+ * Parameters:     None
+ *
+ * Return values:  Int - The y location coord
  *
  **********************************************************************************/
   int getYLocation() {
@@ -613,20 +670,19 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     setLocalPlay()
+ * Method:        setLocalPlay()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
- *
- * Function:   TODO
- *
+ * Function:      Sets isLocal depending on if current game is a local game or network game  
  *             
- * Parameters: None
+ * Parameters:    isLocal - if the game is a local game oor network game
+ *
+ * Return values: None
  *
  **********************************************************************************/
   void setLocalPlay(boolean isLocal) {
     this.isLocal = isLocal;
-    // println("player class: "+ isLocal);
   }
 
 }
