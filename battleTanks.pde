@@ -71,7 +71,7 @@ int pe = 0;
 
 Map map;
 Menu menu;
-
+// This array is the tile addresses of all the walls
 int[] tmp = { 145, 110, 180, 179, 178, 134, 169, 204, 205, 206, 694, 729, 659, 660, 661, 635, 670,
               705, 634, 633, 17, 52, 87, 822, 787, 419, 418, 417, 385, 386, 387,  568,  533,  534,
               499, 586, 515, 192, 191, 193, 227, 18, 16, 821, 823, 384, 454, 289,  253, 324,  288,
@@ -88,8 +88,8 @@ float tilesAcross;
 float tilesDown;
 int tileNumber;
 boolean isLocal = false;
-//PVector player2LocalCoords = new PVector(960, 630);
-PVector player2LocalCoords = new PVector(60, 200);
+PVector player2LocalCoords = new PVector(960, 630);
+//PVector player2LocalCoords = new PVector(60, 200);
 
 //Music player
 Minim minim = new Minim(this);
@@ -444,7 +444,7 @@ void parse(String inString) {
  * Author(s):  Adam Austin
  *             Zac Madden
  *
- * Function:   TODO
+ * Function:   Event triggered on any press of a key on the keyboard
  *             
  * Parameters: None
  *
@@ -454,15 +454,14 @@ void keyPressed(){
     menu.select();
   }
   else{
-    //add if statement here to check for localPlay boolean, and player2.moveLocal() will be called (need to create that with different key bondiongs)
-   player.move();
-   
+    player.move();
    if(isLocal){
      player2.move();
    }
-   if(key == 'a'){
-    println(mapTiles);
-   }
+   //this is used for testing and creating maps. Left in the code on purpose
+   //if(key == 'a'){
+   // println(mapTiles);
+   //}
   }
 }
 
@@ -473,7 +472,7 @@ void keyPressed(){
  * Author(s):  Adam Austin
  *             Zac Madden
  *
- * Function:   TODO
+ * Function:   Event triggered on release of any key on the keyboards
  *             
  * Parameters: None
  *
@@ -494,6 +493,16 @@ void keyReleased(){
   }
 }
 
+/**********************************************************************************
+ * Method:     serverEvent()
+ *
+ * Author(s):  Adam Austin
+ *
+ * Function:   Runs when client first connects to server. Used to send map data to client and set remote player position
+ *             
+ * Parameters: someServer - used to send data to connecting client
+ *             someClient - used to establish initial client 
+ **********************************************************************************/
 // when first connecting, server sends initial co-ords of both players 
 // and the map data
 void serverEvent(Server someServer, Client someClient) {
@@ -518,7 +527,7 @@ void serverEvent(Server someServer, Client someClient) {
  * Author(s):  Adam Austin
  *
  *
- * Function:   TODO
+ * Function:   This is for testing and creating maps in deveolpment. Not ment for customer use, but kept for updating and testing purposes
  *             
  * Parameters: None
  *
