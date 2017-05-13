@@ -42,7 +42,9 @@ class Map {
     stroke(0);
     for (int i = mapTiles.size() -1; i >= 0; i--) {
       location = Util.numberToCoord((int)mapTiles.get(i), tilesAcross, tileSize );
-      rect(location.x, location.y, tileSize, tileSize);
+      imageMode(CORNER);
+      image(tile, location.x, location.y);
+      //rect(location.x, location.y, tileSize, tileSize);
     }
   }
 

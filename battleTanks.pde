@@ -22,6 +22,14 @@
  Song used with permission from creator.
  Original content creator: Alexandr Zhelanov
  https://opengameart.org/content/enemy-spotted
+ 
+ Sand dunes background image approved for public use by creator.
+ Original content creator: txturs
+ https://opengameart.org/content/2048-digitally-painted-tileable-desert-sand-texture
+
+ Rusted concrete wall tile image approved for pubilic use by creator.
+ Original content creator: Tiziana
+ https://opengameart.org/content/redrust-concrete-wall-512px
 
  Tank images approved for public use by creator.
  Original content creator: Remos Turcuman
@@ -64,13 +72,14 @@ int pe = 0;
 Map map;
 Menu menu;
 
-int[] tmp = { 225, 259, 327, 328, 329, 330, 295, 260, 265, 335, 336, 337, 338, 302,  87,  17,  52,
-              301, 266, 326, 292, 258, 229, 264, 299, 334, 661, 660, 659, 178, 179, 180, 145, 110, 
-              694, 729, 431, 432, 436, 438, 442, 443, 439, 437, 435, 680, 682, 681, 684, 683, 293,
-              679, 685, 472, 507, 545, 580, 546, 581, 539, 538, 573, 574, 122, 597, 632,  82, 822,
-              667, 703, 702, 704, 669, 634, 599, 598, 633, 668, 135, 136, 137, 172, 207, 242, 241,
-              206, 171, 170, 205, 240, 318, 353, 354, 390, 389, 388, 416, 451, 486, 415, 414, 450,
-              114, 115, 117, 116, 656, 655, 654, 708, 709, 674, 673, 237, 236, 201, 202, 787      };
+int[] tmp = { 145, 110, 180, 179, 178, 134, 169, 204, 205, 206, 694, 729, 659,  660,  661, 635, 670,
+              705, 634, 633, 368, 403, 401, 438, 366, 17, 52, 87, 822, 787, 752, 419, 418, 417, 385,
+              386, 387, 568, 533, 534, 499, 567, 587, 586, 551, 550, 515, 436, 192, 191,  193,  227,
+              473, 472, 471, 435, 439, 367, 18, 16, 821, 823, 384, 454, 400,  404,  585,  569,  289,
+              254, 252, 253, 324, 288, 272, 271, 306, 305, 340, 270, 647, 612, 648, 402,  611,  613,
+              190, 189, 188, 194, 195, 196, 228, 226, 262, 646, 645, 644, 643, 649, 651,  650,  577,
+              678, 686, 153, 161, 437, 350, 420 };
+
 
 ArrayList<Integer> mapTiles = new ArrayList<Integer>();
 float tileSize = 30;
@@ -100,8 +109,8 @@ ArrayList<Turret> enemyShell;
 //ArrayList<Turret> rocket;
 
 boolean onMenu;
-
-
+PImage bg;
+PImage tile;
 
 // Varables used for time
 int begin;
@@ -122,14 +131,14 @@ int duration;
  **********************************************************************************/
 void setup(){
   size(1050,720);
-
+  
   shell = new ArrayList<Turret>();
   enemyShell = new ArrayList<Turret>();
   
   //rocket = new ArrayList<Turret>();
   frameRate(30);
   menu = new Menu();
-
+  
   tankShot = minim.loadFile("127845__cyberkineticfilms__tank-fire-mixed.wav");
   tankExplosion = minim.loadFile("268557__cydon__explosion-001.mp3");
   
@@ -140,7 +149,12 @@ void setup(){
     music = true;
   }
  
- 
+  bg = loadImage("sand.jpg");
+  bg.resize(1050, 720);
+  
+  tile = loadImage("04tizeta_redwall.jpg");
+  tile.resize(30, 30);
+  
   map = new Map(mapTiles);
   tilesAcross = width / tileSize;
   player1Score = new Score();
@@ -163,7 +177,7 @@ void setup(){
  *
  **********************************************************************************/
 void draw(){
-  background(51);
+  background(bg);
   if(Util.onMenu){
    menu.display();
    //pulls local hostname
@@ -448,9 +462,9 @@ void keyPressed(){
    if(isLocal){
      player2.move();
    }
-   if(key == 'a'){
-    println(mapTiles); 
-   }
+   //if(key == 'a'){
+   // println(mapTiles); 
+   //}
   }
 }
 
@@ -511,12 +525,12 @@ void serverEvent(Server someServer, Client someClient) {
  * Parameters: None
  *
  **********************************************************************************/
-void mousePressed(){
- if(mapTiles.indexOf(Util.coordToNumber(new PVector(mouseX, mouseY))) < 0){
-   map.newTile(mouseX, mouseY); 
- }
- else{
-  map.remTile(mouseX, mouseY); 
- }
+//void mousePressed(){
+// if(mapTiles.indexOf(Util.coordToNumber(new PVector(mouseX, mouseY))) < 0){
+//   map.newTile(mouseX, mouseY); 
+// }
+// else{
+//  map.remTile(mouseX, mouseY); 
+// }
  
-}
+//}
