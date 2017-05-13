@@ -101,7 +101,7 @@ class Player {
   }
   
   
-  void damage(int x, int y, int p, int q, int r) {
+  void damage(int x, int y, int playerNumber, int damageMeterX, int damageMeterY) {
     
     pushStyle();
     fill(255,0,0);
@@ -110,7 +110,7 @@ class Player {
     pushStyle();
     fill(255);
     textSize(20);
-    text("Player "+p, q, r);
+    text("Player "+playerNumber, damageMeterX, damageMeterY);
     popStyle();
     
   }
@@ -120,14 +120,15 @@ class Player {
     
     if (health <= 0) {
       visible = false;
-      int w = 256;
-      int x = counter % 8 * w;
-      int y = counter / 4 * w;
+      int sw = 256;
+      int sh = 256;
+      int sx = counter % 8 * sw;
+      int sy = counter / 8 * sh;
       
       pushMatrix();
       translate(location.x-62.5, location.y-62.5);
       scale(0.5, 0.5);
-      copy(explosion, x, y, w, w, 0, 0, w, w);
+      copy(explosion, sx, sy, sw, sh, 0, 0, sw, sh);
       counter += 1;
       popMatrix();
       if (counter >= 64) {
@@ -138,7 +139,7 @@ class Player {
       }
     }
     else{
-     counter = 0; 
+     counter = 0;
     }
   }
 

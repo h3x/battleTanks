@@ -60,6 +60,7 @@ PVector player2LocalCoords = new PVector(60, 200);
 Minim minim = new Minim(this);
 AudioPlayer mainTheme;
 AudioPlayer tankShot;
+AudioPlayer tankExplosion;
 boolean music = false;
 
 Player player; //this player
@@ -90,6 +91,7 @@ void setup(){
   menu = new Menu();
 
   tankShot = minim.loadFile("127845__cyberkineticfilms__tank-fire-mixed.wav");
+  tankExplosion = minim.loadFile("268557__cydon__explosion-001.mp3");
   
   //Play theme music
   mainTheme = minim.loadFile("data/Enemy spotted.mp3");
@@ -166,7 +168,9 @@ void draw(){
       shell.remove(i);
       player2.health -= shotDamage;
       if(player2.health < 0){
-       player2.health = 0; 
+       tankExplosion.play();
+       player2.health = 0;
+       tankExplosion.rewind();
       }
       println("P2:",player2.health);
     }
