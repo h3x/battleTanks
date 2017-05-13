@@ -94,8 +94,8 @@ PVector player2LocalCoords = new PVector(60, 200);
 //Music player
 Minim minim = new Minim(this);
 AudioPlayer mainTheme;
-AudioPlayer tankShot;
-AudioPlayer tankExplosion;
+AudioSample tankShot;
+AudioSample tankExplosion;
 boolean music = false;
 
 Player player; //this player
@@ -138,8 +138,8 @@ void setup(){
   frameRate(30);
   menu = new Menu();
   
-  tankShot = minim.loadFile("127845__cyberkineticfilms__tank-fire-mixed.wav");
-  tankExplosion = minim.loadFile("268557__cydon__explosion-001.mp3");
+  tankShot = minim.loadSample("127845__cyberkineticfilms__tank-fire-mixed.wav");
+  tankExplosion = minim.loadSample("268557__cydon__explosion-001.mp3");
   
   //Play theme music
   mainTheme = minim.loadFile("data/Enemy spotted.mp3");
@@ -233,10 +233,9 @@ void draw(){
       shell.remove(i);
       player2.health -= shotDamage;
       if(player2.health < 0){
-       tankExplosion.play();
+       tankExplosion.trigger();
        player2.health = 0;
        player1Score.incrementScore(25);
-       tankExplosion.rewind();
       }
       //println("Player2 Health:",player2.health);
     }
@@ -255,10 +254,9 @@ void draw(){
       enemyShell.remove(i);
       player.health -= shotDamage;
       if(player.health < 0){
-       tankExplosion.play();
+       tankExplosion.trigger();
        player.health = 0;
        player2Score.incrementScore(25);
-       tankExplosion.rewind();
       }
       //println("Player1  Health:",player.health);
     }
@@ -291,6 +289,7 @@ void draw(){
   player2.display();
   player1Score.display(player1Score.playerScore, 20, 60);
   player2Score.display(player2Score.playerScore, 930, 60);
+  
   }
 }
 
@@ -461,9 +460,9 @@ void keyPressed(){
    if(isLocal){
      player2.move();
    }
-   //if(key == 'a'){
-   // println(mapTiles); 
-   //}
+   if(key == 'a'){
+    println(mapTiles);
+   }
   }
 }
 

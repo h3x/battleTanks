@@ -221,6 +221,7 @@ class Player {
   void explosion() {
     
     if (health <= 0) {
+      
       visible = false;
       /*
       sw        - abbreviation for 'sprite width'
@@ -286,6 +287,7 @@ class Player {
       shotFired = false;
     }
     explosion();
+    
   }
 
 
@@ -396,10 +398,9 @@ class Player {
         turnRight = false;
       }
       if (keyCode == ' ' && shotFired == false && visible) {
-        tankShot.play();
+        tankShot.trigger();
         shell.add(new Turret(getXLocation(), getYLocation(), 5, player.heading));
         shotFired = true;
-        tankShot.rewind();
         return true;
       }
       return false;
@@ -417,10 +418,9 @@ class Player {
         turnRight = false;
       }
       if (keyCode == 16 && shotFired == false) {
-        tankShot.play();
+        tankShot.trigger();
         enemyShell.add(new Turret(location, heading, 5));
         shotFired = true;
-        tankShot.rewind();
         return true;
       }
       return false;
