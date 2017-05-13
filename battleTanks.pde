@@ -18,6 +18,10 @@ Explosion sprite sheet approved for public use by creator.
 Original content creator: elnineo
 https://opengameart.org/users/elnineo
 
+Explosion sound approved for public use by creator.
+Original content creator: cydon
+http://freesound.org/people/cydon/sounds/268557/
+
 */
 
 
@@ -189,7 +193,9 @@ void draw(){
       enemyShell.remove(i);
       player.health -= shotDamage;
       if(player.health < 0){
+       tankExplosion.play();
        player.health = 0; 
+       tankExplosion.rewind();
       }
       println("P1:",player.health);
     }
