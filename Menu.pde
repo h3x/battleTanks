@@ -12,9 +12,7 @@
  **********************************************************************************/
 
 class Menu {
-  //fill(173,149, 34);
-  //rect(0,0, height,width);
-  //fill(143,60,30);
+  
   int selection;
   int screen;
   int maxSelection;
@@ -126,9 +124,6 @@ class Menu {
 
 
   void screenServer() {
-    fill(0, 255, 0);
-
-
     String[] textString = { "Create Network Game", "Start Local Game", "Back"};
     maxSelection = textString.length - 1;
     for (int i = 0; i < textString.length; i++) {
@@ -160,8 +155,6 @@ class Menu {
   }
 
   void screenServerReady() {
-
-
     String textString = "Your Hostname is";
     String hostString = (String)Util.hostname;
     fill(c2);
