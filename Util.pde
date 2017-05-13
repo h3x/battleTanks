@@ -1,3 +1,16 @@
+/**********************************************************************************
+ * Class:     Util
+ *
+ * Authors:   Adam Austin
+ *
+ * Function:  TODO
+ *             
+ * Imports:   TODO
+ *
+ * Methods:   TODO
+ *
+ **********************************************************************************/
+
 static class Util {
   
   // Utility class for common tools
@@ -7,8 +20,6 @@ static class Util {
   static boolean networkSetup = false;
   static boolean setup = true;
   static String hostname = "";
-  
-  
   
   
   static PVector numberToCoord(int num, float tilesAcross, float tileSize) {

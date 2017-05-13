@@ -1,17 +1,41 @@
-//creates a turret object
+/**********************************************************************************
+ * Class:     Turret
+ *
+ * Authors:   Zac Madden
+ *            Adam Austin
+ *
+ * Function:  TODO
+ *             
+ * Imports:   TODO
+ *
+ * Methods:   TODO
+ *
+ **********************************************************************************/
 
 class Turret {
   
   PVector location;
   PVector acceleration;
-  PVector velocity;
+  PVector velocity; 
   
-  boolean hit = false;
+  boolean hit = false;  //
   
-  //float radius;
+  float x, y;  //
+  float r;  //radius of tank shell shot
   
-  float x, y;
-  float r;
+  
+ /**********************************************************************************
+ * Method:     Constructor
+ *
+ * Author(s):  Zac Madden
+ *
+ * Function:   TODO
+ *             
+ * Parameters: TODO
+ *
+ * Notes:      TODO
+ *
+ **********************************************************************************/
   
   public Turret(float x, float y, float r, float heading) {
     this.location = new PVector(x, y);
@@ -21,36 +45,82 @@ class Turret {
     this.r = r;
     
   }
-  
+
+
+ /**********************************************************************************
+ * Method:     Constructor
+ *
+ * Author(s):  Adam Austin
+ *
+ * Function:   TODO
+ *             
+ * Parameters: TODO
+ *
+ * Notes:      TODO
+ *
+ **********************************************************************************/
     public Turret(PVector location, float heading, float r) {
     this.location = location.copy();
     velocity = PVector.fromAngle(heading + PI/2);
     this.r = r;
   }
   
+  
+/**********************************************************************************
+ * Method:     checkCollisions()
+ *
+ * Author(s):  Zac Madden
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: Player p    - 
+ *
+ **********************************************************************************/
   void checkCollisions(Player p) {
     
     hit = collision(getLocation().x, getLocation().y, r, p.getXLocation(), p.getYLocation(), p.w, p.h);
 
 }
   
+  
+/**********************************************************************************
+ * Method:     display()
+ *
+ * Author(s):  Zac Madden
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void display() {
-    //TODO
-    //Replace ellipse with an image of a tank shell
-   // println(location);
+    
     pushMatrix();
-    //pushStyle();
     translate(location.x, location.y);
     stroke(255);
-    //fill(87, 87, 87);
     fill(255);
     ellipse(0,0, r, r);
     popMatrix();
-    //popStyle();
     
   }
   
-  
+
+/**********************************************************************************
+ * Method:     update()
+ *
+ * Author(s):  Zac Madden
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void update() {
     velocity.setMag(20);    
     this.location.add(velocity);
@@ -58,6 +128,18 @@ class Turret {
   }
 
   
+/**********************************************************************************
+ * Method:     wrap()
+ *
+ * Author(s):  Zac Madden
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   boolean wrap() {
     if (location.x > width + this.r) {
       return true;
@@ -72,6 +154,19 @@ class Turret {
     return false;
   }
   
+  
+/**********************************************************************************
+ * Method:     getLocation()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   PVector getLocation(){
    return location; 
   }

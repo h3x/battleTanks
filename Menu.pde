@@ -1,3 +1,16 @@
+/**********************************************************************************
+ * Class:     Menu
+ *
+ * Authors:   Adam Austin
+ *
+ * Function:  TODO
+ *             
+ * Imports:   TODO
+ *
+ * Methods:   TODO
+ *
+ **********************************************************************************/
+
 class Menu {
   //fill(173,149, 34);
   //rect(0,0, height,width);
@@ -18,6 +31,18 @@ class Menu {
   boolean isLocal = false;
 
 
+ /**********************************************************************************
+ * Method:     Constructor
+ *
+ * Author(s):  Adam Austin
+ *
+ * Function:   TODO
+ *             
+ * Parameters: TODO
+ *
+ * Notes:      TODO
+ *
+ **********************************************************************************/
   Menu() {
     selection = 0; 
     screen = 0;

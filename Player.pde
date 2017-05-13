@@ -1,4 +1,16 @@
-//creates a player object with a provided spritesheet
+/**********************************************************************************
+ * Class:     Player
+ *
+ * Authors:   Zac Madden
+ *            Adam Austin
+ *
+ * Function:  TODO
+ *             
+ * Imports:   TODO
+ *
+ * Methods:   TODO
+ *
+ **********************************************************************************/
 
 class Player {
   int tileSize; 
@@ -32,6 +44,20 @@ class Player {
 
   //ArrayList<PVector> mapCoords;
 
+
+ /**********************************************************************************
+ * Method:     Constructor
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   TODO
+ *             
+ * Parameters: TODO
+ *
+ * Notes:      TODO
+ *
+ **********************************************************************************/
   public Player(String file, String file2, float x, float y, float w, float h) {
     tank = loadImage(file);
     location = new PVector(x, y);
@@ -54,6 +80,18 @@ class Player {
   }
 
 
+/**********************************************************************************
+ * Method:     acceleration()
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void acceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
     acceleration.mult(3.0);
@@ -64,6 +102,18 @@ class Player {
   }
 
 
+/**********************************************************************************
+ * Method:     deceleration()
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void deceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
     acceleration.mult(-2);
@@ -75,6 +125,18 @@ class Player {
   }
 
 
+/**********************************************************************************
+ * Method:     steering()
+ *
+ * Author(s):  Zac Madden
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void steering(float angle) {
     
     heading += angle;
@@ -82,6 +144,18 @@ class Player {
   }
 
 
+/**********************************************************************************
+ * Method:     walls()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   boolean walls(PVector dir) {
     // println(coordMap.size());
     PVector velCopy = velocity.copy();
@@ -101,7 +175,23 @@ class Player {
   }
   
   
-  void damage(int x, int y, int playerNumber, int damageMeterX, int damageMeterY) {
+/**********************************************************************************
+ * Method:     damage()
+ *
+ * Author(s):  Zac Madden
+ *
+ * Function:   
+ *             
+ * Parameters: x         - 
+ *             y         - 
+ *                       - 
+ *             playerNum - 
+ *             dmgMeterX - 
+ *             dmgMeterY - 
+ *
+ **********************************************************************************/
+  
+  void damage(int x, int y, int playerNum, int dmgMeterX, int dmgMeterY) {
     
     pushStyle();
     fill(255,0,0);
@@ -110,20 +200,41 @@ class Player {
     pushStyle();
     fill(255);
     textSize(20);
-    text("Player "+playerNumber, damageMeterX, damageMeterY);
+    text("Player "+playerNum, dmgMeterX, dmgMeterY);
     popStyle();
     
   }
   
   
+/**********************************************************************************
+ * Method:     explosion()
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   Animates an explostion when player health
+ *             is less than or equal to zero
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void explosion() {
     
     if (health <= 0) {
       visible = false;
+      /*
+      sw        - abbreviation for 'sprite width'
+      sh        - abbreviation for 'sprite height'
+                    - cuts 256x256 sections from the sprite sheet
+      sx        - X coordinate of the sprite sheet upper left corner
+      sy        - Y coordinate of the sprite sheet upper left corner
+      counter   - increments through each row of the sprite 8 times
+                  in order to cut 8 256x256 images
+      */
       int sw = 256;
       int sh = 256;
-      int sx = counter % 8 * sw;
-      int sy = counter / 8 * sh;
+      int sx = counter % 8 * sw;  //
+      int sy = counter / 8 * sh;  //
       
       pushMatrix();
       translate(location.x-62.5, location.y-62.5);
@@ -144,6 +255,18 @@ class Player {
   }
 
 
+/**********************************************************************************
+ * Method:     display()
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void display() {
     
     pushMatrix();
@@ -167,13 +290,24 @@ class Player {
   }
 
 
+/**********************************************************************************
+ * Method:     update()
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void update() {
-
 
     if ( coordMap.size() <= 0) {
       onConnect();
     }
-
+    
     if (goForward) {
       acceleration();
     }
@@ -192,6 +326,18 @@ class Player {
   }
 
 
+/**********************************************************************************
+ * Method:     move()
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void move() {
     if (isLocal == false) {
       if (keyCode == UP) {
@@ -222,6 +368,19 @@ class Player {
     }
   }
 
+
+/**********************************************************************************
+ * Method:     idle()
+ *
+ * Author(s):  Zac Madden
+ *             Adam Austin
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   boolean idle() {
 
     if (isLocal == false) {
@@ -269,30 +428,105 @@ class Player {
     }
   }
 
+
+/**********************************************************************************
+ * Method:     setVelocity()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: x         - 
+ *             y         - 
+ *
+ **********************************************************************************/
   void setVelocity(int x, int y) {
     location.add(new PVector(x, y));
   }
 
+
+/**********************************************************************************
+ * Method:     setLocation()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: x         - 
+ *             y         - 
+ *
+ **********************************************************************************/
   void setLocation(int x, int y) {
     location.x = x;
     location.y = y;
   }
 
-
+/**********************************************************************************
+ * Method:     onConnect()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void onConnect() {
     for (int i = 0; i < mapTiles.size(); i++) {
       coordMap.add(Util.numberToCoord(mapTiles.get(i)));
     }
   }
 
+/**********************************************************************************
+ * Method:     getHeading()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   float getHeading() {
     return heading;
   }
 
+/**********************************************************************************
+ * Method:     setHeading()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void setHeading(float heading) {
     this.heading = heading;
   }
-  
+
+/**********************************************************************************
+ * Method:     getRandomLocation()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   PVector getRandomLocation(){
     PVector rLoc;
     while(true){
@@ -304,14 +538,52 @@ class Player {
     
   }
   
+/**********************************************************************************
+ * Method:     getXLocation()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   int getXLocation() {
     return int(location.x);
   }
 
+
+/**********************************************************************************
+ * Method:     getYLocation()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   int getYLocation() {
     return int(location.y);
   }
 
+
+/**********************************************************************************
+ * Method:     setLocalPlay()
+ *
+ * Author(s):  Adam Austin
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: None
+ *
+ **********************************************************************************/
   void setLocalPlay(boolean isLocal) {
     this.isLocal = isLocal;
     // println("player class: "+ isLocal);

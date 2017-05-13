@@ -1,3 +1,16 @@
+/**********************************************************************************
+ * Class:     Map
+ *
+ * Authors:   Adam Austin
+ *
+ * Function:  TODO
+ *             
+ * Imports:   TODO
+ *
+ * Methods:   TODO
+ *
+ **********************************************************************************/
+
 class Map {
 
   ArrayList<Integer> newMap;
@@ -5,6 +18,19 @@ class Map {
   int tileSize;
   int tilesAcross;
   
+  
+ /**********************************************************************************
+ * Method:     Constructor
+ *
+ * Author(s):  Adam Austin
+ *
+ * Function:   TODO
+ *             
+ * Parameters: TODO
+ *
+ * Notes:      TODO
+ *
+ **********************************************************************************/
   Map(ArrayList<Integer> newMap) {
     this.newMap = newMap;
     tileSize = Util.tileSize;

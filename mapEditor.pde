@@ -1,3 +1,16 @@
+/**********************************************************************************
+ * Class:     mapEditor
+ *
+ * Authors:   Adam Austin
+ *
+ * Function:  TODO
+ *             
+ * Imports:   TODO
+ *
+ * Methods:   TODO
+ *
+ **********************************************************************************/
+
 class mapEditor {
 
   int currentStatus;
