@@ -415,16 +415,14 @@ void parse(String inString) {
     } else if (inString.charAt(2)== 'S') {
       player2.setLocation(newX, newY);
       player2.setHeading(newHeading);
-    }
-    
+    }    
     //println("Player Data: " + inString);
   } else if (inString.charAt(1) == 'M') {
     map.decodeMap(inString);
     //print("Map data: " + inString) ;
   } else if (inString.charAt(1) == 'B'){
      enemyShell.add(new Turret(player2.location, player2.getHeading(), 5));
-  }
-   
+  }   
 }
 
 
@@ -450,9 +448,9 @@ void keyPressed(){
    if(isLocal){
      player2.move();
    }
-   //if(key == 'a'){
-   // println(mapTiles); 
-   //}
+   if(key == 'a'){
+    println(mapTiles); 
+   }
   }
 }
 
@@ -487,8 +485,7 @@ void keyReleased(){
 // when first connecting, server sends initial co-ords of both players 
 // and the map data
 void serverEvent(Server someServer, Client someClient) {
-  println("We have a new client: " + someClient.ip()); 
-  
+  println("We have a new client: " + someClient.ip());   
   int p2x = floor(player2LocalCoords.x); 
   int p2y = floor(player2LocalCoords.y);
   player2.setLocation(p2x, p2y);
