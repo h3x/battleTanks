@@ -50,7 +50,7 @@ class Turret {
  /**********************************************************************************
  * Method:     Constructor
  *
- * Author(s):  Adam Austin
+ * Author(s):  Zac Madden
  *
  * Function:   TODO
  *             
@@ -162,10 +162,12 @@ class Turret {
  * Author(s):  Adam Austin
  *
  *
- * Function:   TODO
+ * Function:   Returns the location of the object
  *
  *             
  * Parameters: None
+ *
+ * Return values: PVector - location of the object
  *
  **********************************************************************************/
   PVector getLocation(){

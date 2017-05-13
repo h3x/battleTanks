@@ -3,11 +3,12 @@
  *
  * Authors:   Adam Austin
  *
- * Function:  TODO
+ * Function:  Unfinnished map editor
  *             
- * Imports:   TODO
+ * Imports:   None
  *
- * Methods:   TODO
+ * Note:      This class is unfinnished and does not appear in the current version of the game. It has been left here
+ *            for continued work outside of the assignment scope in the future
  *
  **********************************************************************************/
 
