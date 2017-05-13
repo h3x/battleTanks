@@ -89,7 +89,7 @@ float tilesDown;
 int tileNumber;
 boolean isLocal = false;
 //PVector player2LocalCoords = new PVector(960, 630);
-PVector player2LocalCoords = new PVector(60, 200);
+PVector player2LocalCoords = new PVector(60, 100);
 
 //Music player
 Minim minim = new Minim(this);
@@ -100,12 +100,11 @@ boolean music = false;
 
 Player player; //this player
 Player player2; //remote player
-Score player1Score;
-Score player2Score;
+Score player1Score; //this player score
+Score player2Score; // remote player score
 
 ArrayList<Turret> shell;
 ArrayList<Turret> enemyShell;
-//ArrayList<Turret> rocket;
 
 boolean onMenu;
 PImage bg;
@@ -280,22 +279,27 @@ void draw(){
     }
   }
   
-  player.update();
-  player2.update();
   player.damage(20, 20, 1, 20, 40);
   player2.damage(930, 20, 2, 930, 40);
   
-  player.display();
-  player2.display();
   player1Score.display(player1Score.playerScore, 20, 60);
   player2Score.display(player2Score.playerScore, 930, 60);
+  
+  player.update();
+  player2.update();
+
+  player.display();
+  player2.display();
+  
+  player.checkCollisions(player);
+  player2.checkCollisions(player);
   
   }
 }
 
 
 /**********************************************************************************
- * Method:     collision()
+ * Method:     shellTankCollision()
  *
  * Author(s):  Zac Madden
  *
@@ -311,7 +315,7 @@ void draw(){
  *             th        - 
  *
  **********************************************************************************/
-boolean collision(float sx, float sy, float radius, float tx, float ty, float tw, float th) {
+boolean shellTankCollision(float sx, float sy, float radius, float tx, float ty, float tw, float th) {
   
   float tempX = sx;  //
   float tempY = sy;  //
@@ -331,6 +335,45 @@ boolean collision(float sx, float sy, float radius, float tx, float ty, float tw
   
   if (distance <= radius) {  //
     //println("Hit!");
+    return true;
+  }
+  return false;
+}
+
+
+/**********************************************************************************
+ * Method:     tankOnTankCollision()
+ *
+ * Author(s):  Zac Madden
+ *
+ *
+ * Function:   TODO
+ *             
+ * Parameters: tx        - 
+ *             ty        - 
+ *             p2tx      - 
+ *             p2ty      - 
+ *
+ **********************************************************************************/
+boolean tankOnTankCollision(float tx, float ty, float p2tx, float p2ty) {
+  
+  float tempX = tx;  //
+  float tempY = ty;  //
+  
+  if (tx < p2tx) {
+    tempX = p2tx;
+  } else if (tx > p2tx) {
+  tempX = p2tx;
+  } if (ty < p2ty) {
+    tempY = p2ty;
+  } else if (ty > p2ty)
+  tempY = p2ty;
+  
+  float distX = tx - tempX;  //
+  float distY = ty - tempY;  //
+  float distance = sqrt((distX * distX) + (distY * distY));  //
+  
+  if (distance <= 20) {  //
     return true;
   }
   return false;
@@ -460,9 +503,9 @@ void keyPressed(){
    if(isLocal){
      player2.move();
    }
-   if(key == 'a'){
-    println(mapTiles);
-   }
+   //if(key == 'a'){
+   // println(mapTiles);
+   //}
   }
 }
 

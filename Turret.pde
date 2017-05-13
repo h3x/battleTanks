@@ -18,10 +18,10 @@ class Turret {
   PVector acceleration;
   PVector velocity; 
   
-  boolean hit = false;  //
+  boolean hit = false; //
   
-  float x, y;  //
-  float r;  //radius of tank shell shot
+  float x, y; //
+  float r; //radius of tank shell shot
   
   
  /**********************************************************************************
@@ -80,7 +80,8 @@ class Turret {
  **********************************************************************************/
   void checkCollisions(Player p) {
     
-    hit = collision(getLocation().x, getLocation().y, r, p.getXLocation(), p.getYLocation(), p.w, p.h);
+    hit = shellTankCollision(getLocation().x, getLocation().y, r,
+          p.getXLocation(), p.getYLocation(), p.w, p.h);
 
 }
   

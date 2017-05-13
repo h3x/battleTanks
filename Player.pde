@@ -27,6 +27,7 @@ class Player {
   boolean shotFired;
   boolean isLocal = false;
   boolean visible = true;
+  boolean hit = false;
   
   float angle;
   float heading;
@@ -95,10 +96,11 @@ class Player {
   void acceleration() {
     acceleration = PVector.fromAngle(heading + PI/2);
     acceleration.mult(3.0);
+    
     //check for walls before allowing movement forward
     if (walls(acceleration)) {
       velocity.add(acceleration);
-    }
+    } 
   }
 
 
@@ -230,7 +232,7 @@ class Player {
       sx        - X coordinate of the sprite sheet upper left corner
       sy        - Y coordinate of the sprite sheet upper left corner
       counter   - increments through each row of the sprite 8 times
-                  in order to cut 8 256x256 images
+                  in order to cut 8 256x256 images per row
       */
       int sw = 256;
       int sh = 256;
@@ -280,8 +282,8 @@ class Player {
     }
     popMatrix();
 
-    //stroke(255, 0, 0);
-    //rect(location.x-10,location.y- 10, w, h);
+    stroke(255, 0, 0);
+    rect(location.x-10,location.y- 10, w, h);
 
     if (shotFired == true && frameCount % 100 == 0) {
       shotFired = false;
@@ -290,6 +292,26 @@ class Player {
     
   }
 
+
+/**********************************************************************************
+ * Method:     checkCollisions()
+ *
+ * Author(s):  Zac Madden
+ *
+ *
+ * Function:   TODO
+ *
+ *             
+ * Parameters: Player p    - 
+ *
+ **********************************************************************************/
+  void checkCollisions(Player p) {
+    
+    hit = tankOnTankCollision(p.getXLocation(), p.getYLocation(),
+                              player2.getXLocation(), player2.getYLocation());
+
+
+}
 
 /**********************************************************************************
  * Method:     update()
@@ -321,9 +343,16 @@ class Player {
     if (turnRight) {
       steering(0.05);
     }
-
+    
     location.add(velocity);
     velocity.mult(0.25);
+    
+    if (hit == true) {
+      //TODO
+    } else {
+      //TODO
+    }
+    
   }
 
 
@@ -464,6 +493,7 @@ class Player {
     location.y = y;
   }
 
+
 /**********************************************************************************
  * Method:     onConnect()
  *
@@ -482,6 +512,7 @@ class Player {
     }
   }
 
+
 /**********************************************************************************
  * Method:     getHeading()
  *
@@ -498,6 +529,7 @@ class Player {
     return heading;
   }
 
+
 /**********************************************************************************
  * Method:     setHeading()
  *
@@ -513,6 +545,7 @@ class Player {
   void setHeading(float heading) {
     this.heading = heading;
   }
+
 
 /**********************************************************************************
  * Method:     getRandomLocation()
@@ -543,6 +576,7 @@ class Player {
       }
       return rLoc; 
   }
+  
   
 /**********************************************************************************
  * Method:     getXLocation()
