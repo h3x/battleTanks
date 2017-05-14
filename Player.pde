@@ -25,8 +25,8 @@
  *            getHeading()       - Gets the heading of the tank (used for network play)
  *            setHeading()       - Sets the heading of the tank (used for network play)
  *            getRandomLocation()- Returns a random x,y location for respawn
- *            getXLocation()     - Returns the location x coord
- *            getYLocation()     - Returns the location y coord
+ *            getXLocation()     - Returns the location X coordinate
+ *            getYLocation()     - Returns the location Y coordinate
  *            setLocalPlay()     - Sets the onLocal boolean to true for local play          
  *
  *            
@@ -112,14 +112,14 @@ class Player {
  *
  * Function:       Accelerates the player
  *             
- * Parameters:     None
+ * Parameters:     accel     - Obtains the acceleration speed from move()
  *
  * Return values:  None
  *
  **********************************************************************************/
-  void acceleration() {
+  void acceleration(int accel) {
     acceleration = PVector.fromAngle(heading + PI/2);
-    acceleration.mult(3.0);
+    acceleration.mult(accel);
     
     //check for walls before allowing movement forward
     if (walls(acceleration)) {
@@ -134,17 +134,17 @@ class Player {
  * Author(s):      Zac Madden
  *                 Adam Austin
  *
- * Function:       Stops accelerating the player
+ * Function:       Stops accelerating the player and reverses tank
  *
  *             
- * Parameters:     None
+ * Parameters:     decel     - Obtains the deceleration speed from move()
  *
  * Return values:  None
  *
  **********************************************************************************/
-  void deceleration() {
+  void deceleration(int decel) {
     acceleration = PVector.fromAngle(heading + PI/2);
-    acceleration.mult(-2);
+    acceleration.mult(decel);
 
     //check for walls before allowing movement backwards
     if (walls(acceleration)) {
@@ -160,7 +160,8 @@ class Player {
  *
  * Function:       Rotates the player
  *           
- * Parameters:     None
+ * Parameters:     angle     - Keeps track of the angle the player is facing in
+ *                             order to move in that direction
  *
  * Return values:  None
  *
@@ -176,11 +177,13 @@ class Player {
  * Author(s):      Adam Austin
  *
  *
- * Function:       Uses a lookahead technique to figure out if the player _did_ move in the direction intended, will the tank
- *                 end up inside a wall, returns true if path clear, returns false if there is a wall in the way
+ * Function:       Uses a lookahead technique to figure out if the player _did_ 
+ *                 move in the direction intended, will the tank end up inside
+ *                 a wall, returns true if path clear, returns false if there 
+ *                 is a wall in the way
  *
  *             
- * Parameters:     dir - The intended acceleration vector
+ * Parameters:     dir     - The intended acceleration vector
  *
  * Return values:  Boolean - true if all clear
  *                         - false if wall detected at acceleration vector
@@ -215,8 +218,8 @@ class Player {
  *
  * Function:       Displays and updates damage meter indicating player health
  *             
- * Parameters:     dmgMeterX - X location of the damage meter         - 
- *                 dmgMeterY - Y location of the damage meter    
+ * Parameters:     dmgMeterX - X location of the damage meter
+ *                 dmgMeterY - Y location of the damage meter
  *                 playerNum - Player 1 or player 2
  *                 dmgTextX  - X location of the text "player"
  *                 dmgTextY  - Y location of the text "player"
@@ -224,7 +227,6 @@ class Player {
  * Return values:  None
  *
  **********************************************************************************/
-  
   void damage(int dmgMeterX, int dmgMeterY, int playerNum, int dmgTextX, int dmgTextY) {
     
     pushStyle();
@@ -287,20 +289,20 @@ class Player {
       }
     }
     else{
-     counter = 0;
+     counter = 0; //set counter to zero after animation has finished
     }
   }
 
 
 /**********************************************************************************
- * Method:     display()
+ * Method:        display()
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):     Zac Madden
+ *                Adam Austin
  *
- * Function:   Draw tank object to the screen
+ * Function:      Draw tank object to the screen
  *             
- * Parameters: None
+ * Parameters:    None
  * 
  * Return values: None
  *
@@ -317,10 +319,7 @@ class Player {
     }
     popMatrix();
 
-    stroke(255, 0, 0);
-    //rect(location.x-10,location.y- 10, w, h);
-
-    if (shotFired == true && frameCount % 100 == 0) {
+    if (shotFired == true && frameCount % 100 == 0) { //restrict shot frequency
       shotFired = false;
     }
     explosion();
@@ -329,36 +328,37 @@ class Player {
 
 
 /**********************************************************************************
- * Method:     checkCollisions()
+ * Method:        checkCollisions()
  *
- * Author(s):  Zac Madden
+ * Author(s):     Zac Madden
  *
  *
- * Function:   TODO
- *
+ * Function:      Keeps track of both player's X and Y coordinates,
+ *                and returns them to the tankOnTankCollision()
+ *                boolean in main().
  *             
- * Parameters: Player p    - 
+ * Parameters:    Player p    - Uses 'p' as a reference to the player class
  *
  * Return values: None
  *
  **********************************************************************************/
   void checkCollisions(Player p) {
+    
     hit = tankOnTankCollision(p.getXLocation(), p.getYLocation(),
                               player2.getXLocation(), player2.getYLocation());
-
-
-}
+                            }
 
 
 /**********************************************************************************
- * Method:     update()
+ * Method:        update()
  *
- * Author(s):  Zac Madden
- *             Adam Austin
+ * Author(s):     Zac Madden
+ *                Adam Austin
  *
- * Function:   Runs every frame. Wraps player location around edges of the window, runs player movement methods and updates velocity accordingly
+ * Function:      Runs every frame. Wraps player location around edges of the window,
+ *                runs player movement methods and updates velocity accordingly
  *             
- * Parameters: None
+ * Parameters:    None
  *
  * Return values: None
  *
@@ -383,10 +383,10 @@ class Player {
     }
     
     if (goForward) {
-      acceleration();
+      acceleration(3);
     }
     if (goBack) {
-      deceleration();
+      deceleration(-2);
     }
     if (turnLeft) {
       steering(-0.05);
@@ -396,12 +396,11 @@ class Player {
     }
     
     location.add(velocity);
-    velocity.mult(0.25);
     
     if (hit == true) {
-      //TODO
+      velocity.mult(-0.75); //decrease velocity when tanks collision is true
     } else {
-      //TODO
+      velocity.mult(0.25); //return to normal velocity if collision is false
     }
     
   }

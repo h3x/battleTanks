@@ -20,8 +20,12 @@
 
  Credits:
  Song used with permission from creator.
- Original content creator: Alexandr Zhelanov
+ Original content composer: Alexandr Zhelanov
  https://opengameart.org/content/enemy-spotted
+ 
+ Outro Theme on Credits screen composed project team member.
+ Original content creator: Zac Madden
+ zac.madden@gmail.com
  
  Sand dunes background image approved for public use by creator.
  Original content creator: txturs
@@ -94,6 +98,7 @@ PVector player2LocalCoords = new PVector(60, 100);
 //Music player
 Minim minim = new Minim(this);
 AudioPlayer mainTheme;
+AudioPlayer creditsTheme;
 AudioSample tankShot;
 AudioSample tankExplosion;
 boolean music = false;
@@ -146,7 +151,8 @@ void setup(){
     mainTheme.loop();
     music = true;
   }
- 
+  creditsTheme = minim.loadFile("credit_outtro.wav");
+  
   bg = loadImage("sand.jpg");
   bg.resize(1050, 720);
   
@@ -236,7 +242,6 @@ void draw(){
        player2.health = 0;
        player1Score.incrementScore(25);
       }
-      //println("Player2 Health:",player2.health);
     }
     if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) { //issue here <<----
       shell.remove(i);
@@ -257,7 +262,6 @@ void draw(){
        player.health = 0;
        player2Score.incrementScore(25);
       }
-      //println("Player1  Health:",player.health);
     }
     //println(Util.coordToNumber(e.getLocation()));
     if (e.wrap() == true || mapTiles.indexOf(Util.coordToNumber(e.getLocation())) >= 0) {
@@ -366,7 +370,7 @@ boolean tankOnTankCollision(float tx, float ty, float p2tx, float p2ty) {
   tempX = p2tx;
   } if (ty < p2ty) {
     tempY = p2ty;
-  } else if (ty > p2ty)
+  } else if (ty > p2ty + 20)
   tempY = p2ty;
   
   float distX = tx - tempX;  //

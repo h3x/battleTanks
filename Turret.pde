@@ -8,7 +8,11 @@
  *             
  * Imports:   TODO
  *
- * Methods:   TODO
+ * Methods:   checkCollisions()  - Checks for tank on shell collision
+ *            display()          - Draws the shell shots
+ *            update()           - Update the position of the shell object
+ *            wrap()             - Detects if shot has hit the edges of the window
+ *            getLocation()      - Returns the location coordinates
  *
  **********************************************************************************/
 
@@ -18,22 +22,23 @@ class Turret {
   PVector acceleration;
   PVector velocity; 
   
-  boolean hit = false; //
+  boolean hit = false;
   
   float x, y; //
   float r; //radius of tank shell shot
   
   
  /**********************************************************************************
- * Method:     Constructor
+ * Method:       Constructor
  *
- * Author(s):  Zac Madden
+ * Author(s):    Zac Madden
  *
- * Function:   TODO
+ * Function:     Create a new shell object
  *             
- * Parameters: TODO
- *
- * Notes:      TODO
+ * Parameters:   x       - X coordinate for location
+ *               y       - Y coordinate for location
+ *               r       - The shell radius
+ *               heading - Keeps track of the current direction
  *
  **********************************************************************************/
   
@@ -48,15 +53,15 @@ class Turret {
 
 
  /**********************************************************************************
- * Method:     Constructor
+ * Method:       Constructor
  *
- * Author(s):  Zac Madden
+ * Author(s):    Zac Madden
  *
- * Function:   TODO
+ * Function:     Create a new shell object for player 2
  *             
- * Parameters: TODO
- *
- * Notes:      TODO
+ * Parameters:   r        - The shell radius
+ *               location - coordinates for location
+ *               heading  - Keeps track of the current direction
  *
  **********************************************************************************/
     public Turret(PVector location, float heading, float r) {
@@ -67,15 +72,15 @@ class Turret {
   
   
 /**********************************************************************************
- * Method:     checkCollisions()
+ * Method:        shellTankCollision()
  *
- * Author(s):  Zac Madden
+ * Author(s):     Zac Madden
  *
  *
- * Function:   TODO
- *
+ * Function:      Keeps track of both player and shell shot locations,
+ *                and returns them to the shellTankCollision() boolean in main().
  *             
- * Parameters: Player p    - 
+ * Parameters:    Player p    - Uses 'p' as a reference to the player class
  *
  **********************************************************************************/
   void checkCollisions(Player p) {
@@ -87,15 +92,15 @@ class Turret {
   
   
 /**********************************************************************************
- * Method:     display()
+ * Method:       display()
  *
- * Author(s):  Zac Madden
+ * Author(s):    Zac Madden
  *
  *
- * Function:   TODO
+ * Function:     Draws the shell shots on screen
  *
  *             
- * Parameters: None
+ * Parameters:   None
  *
  **********************************************************************************/
   void display() {
@@ -111,34 +116,35 @@ class Turret {
   
 
 /**********************************************************************************
- * Method:     update()
+ * Method:       update()
  *
- * Author(s):  Zac Madden
+ * Author(s):    Zac Madden
  *
  *
- * Function:   TODO
+ * Function:     Updates the current position of the shot
  *
  *             
- * Parameters: None
+ * Parameters:   None
  *
  **********************************************************************************/
   void update() {
-    velocity.setMag(20);    
+    velocity.setMag(20); //magnitude for all shots
     this.location.add(velocity);
     
   }
 
   
 /**********************************************************************************
- * Method:     wrap()
+ * Method:       wrap()
  *
- * Author(s):  Zac Madden
+ * Author(s):    Zac Madden
  *
  *
- * Function:   TODO
+ * Function:     Detects if shot has hit the edges of the window. The array in main()
+ *               controls what to do when this happens
  *
  *             
- * Parameters: None
+ * Parameters:   None
  *
  **********************************************************************************/
   boolean wrap() {
@@ -157,15 +163,15 @@ class Turret {
   
   
 /**********************************************************************************
- * Method:     getLocation()
+ * Method:        getLocation()
  *
- * Author(s):  Adam Austin
+ * Author(s):     Adam Austin
  *
  *
- * Function:   Returns the location of the object
+ * Function:      Returns the location of the object
  *
  *             
- * Parameters: None
+ * Parameters:    None
  *
  * Return values: PVector - location of the object
  *

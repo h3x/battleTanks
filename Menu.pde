@@ -55,6 +55,17 @@ class Menu {
     isServer = true;
   }
 
+
+ /**********************************************************************************
+ * Method:       display()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void display() {
     textSize(64);
     image(onShow, 0, 0); 
@@ -84,12 +95,24 @@ class Menu {
   }
 
 
+ /**********************************************************************************
+ * Method:       screenMain()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void screenMain() {
     onShow = mainMenu;
     String[] textString = { "Start Multiplayer Game", "Join Multiplayer Game", "Credits", "Exit"};
     maxSelection = textString.length - 1;
     for (int i = 0; i < textString.length; i++) {
       if (i == selection) {
+        creditsTheme.pause();
+        creditsTheme.rewind();
         fill(c1);
       } else {
         fill(c2);
@@ -112,6 +135,7 @@ class Menu {
         break;
 
       case 2:
+      creditsTheme.loop();
         screen = 3;
         break;
 
@@ -123,6 +147,16 @@ class Menu {
   }
 
 
+ /**********************************************************************************
+ * Method:       screenServer()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void screenServer() {
     String[] textString = { "Create Network Game", "Start Local Game", "Back"};
     maxSelection = textString.length - 1;
@@ -154,6 +188,17 @@ class Menu {
     }
   }
 
+
+ /**********************************************************************************
+ * Method:       screenServerReady()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void screenServerReady() {
     String textString = "Your Hostname is";
     String hostString = (String)Util.hostname;
@@ -174,6 +219,16 @@ class Menu {
   }
 
 
+ /**********************************************************************************
+ * Method:       screenClient()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void screenClient() {
     isServer = false;
     fill(c2);
@@ -190,9 +245,20 @@ class Menu {
     if (enter) {
       screen = 0;
     }
+    
   }
 
 
+ /**********************************************************************************
+ * Method:       select()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void select() {
     if ( keyCode == UP) {
       selection--;
@@ -220,10 +286,32 @@ class Menu {
     }
   }
 
+
+ /**********************************************************************************
+ * Method:       getServerStatus()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   boolean getServerStatus() {
     return isServer;
   }
   
+  
+ /**********************************************************************************
+ * Method:       isLocal()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   boolean isLocal(){
    return isLocal;
      

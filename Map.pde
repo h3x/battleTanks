@@ -37,6 +37,19 @@ class Map {
     tilesAcross = width / tileSize;
 }
 
+
+ /**********************************************************************************
+ * Method:       drawMap()
+ *
+ * Author(s):    Adam Austin
+ *               Zac Madden
+ *
+ * Function:     When placing tiles on the screen, the image is obtained from
+ *               this function.
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void drawMap() {
     fill(200,60,20);
     stroke(0);
@@ -48,6 +61,17 @@ class Map {
     }
   }
 
+
+ /**********************************************************************************
+ * Method:       decodeMap()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void decodeMap(String mapString) {
     //get rid of datatype identifyer, and trailing noise elements (, \n etc)
     mapString = mapString.substring(2, mapString.length()-2);
@@ -60,15 +84,34 @@ class Map {
   }
 
 
+ /**********************************************************************************
+ * Method:       newTile()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void newTile(int x, int y) {
     int tileClicked = Util.coordToNumber(new PVector(x, y), tilesAcross, tileSize);
     if (mapTiles.indexOf(tileClicked) < 0) {
       mapTiles.add(tileClicked);
     }
   }
-  
- 
 
+
+ /**********************************************************************************
+ * Method:       newTile()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void newTile(int tileClicked) {
     if (mapTiles.indexOf(tileClicked) < 0) {
       mapTiles.add(tileClicked);
@@ -76,6 +119,16 @@ class Map {
   }
 
 
+ /**********************************************************************************
+ * Method:       remTile()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void remTile(int x, int y) {
     int tileClicked = Util.coordToNumber(new PVector(mouseX, mouseY), tilesAcross, tileSize);
     int arrayIndex = mapTiles.indexOf(tileClicked);
@@ -83,7 +136,18 @@ class Map {
       mapTiles.remove(arrayIndex);
     }
   }
-  
+
+
+ /**********************************************************************************
+ * Method:       addABunchOfTiles()
+ *
+ * Author(s):    Adam Austin
+ *
+ * Function:     TODO
+ *             
+ * Parameters:   None
+ *
+ **********************************************************************************/
   void addABunchOfTiles(int[] newMap){
     for(int i = 0; i < newMap.length; i++){
      if(mapTiles.indexOf(newMap[i]) < 0){
