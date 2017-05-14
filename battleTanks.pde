@@ -92,8 +92,7 @@ float tilesAcross;
 float tilesDown;
 int tileNumber;
 boolean isLocal = false;
-//PVector player2LocalCoords = new PVector(960, 630);
-PVector player2LocalCoords = new PVector(60, 100);
+PVector player2LocalCoords = new PVector(960, 630);
 
 //Music player
 Minim minim = new Minim(this);
@@ -308,40 +307,43 @@ void draw(){
  * Author(s):  Zac Madden
  *
  *
- * Function:   TODO
+ * Function:   Calculates the distance between the tank and shell
  *             
- * Parameters: sx        - 
- *             sy        - 
- *             radius    - 
- *             tx        - 
- *             ty        - 
- *             tw        - 
- *             th        - 
+ * Parameters: sx        - shell X coordinate
+ *             sy        - shell Y coordinate
+ *             radius    - shell radius
+ *             tx        - tank X coordinate
+ *             ty        - tank Y coordinate
+ *             tw        - tank width
+ *             th        - tank height
+ *
+ * Returns:    Returns true if the distance is less and or equal to shell radius,
+ *             otherwise returns false
  *
  **********************************************************************************/
 boolean shellTankCollision(float sx, float sy, float radius, float tx, float ty, float tw, float th) {
   
-  float tempX = sx;  //
-  float tempY = sy;  //
+  float tempX = sx;
+  float tempY = sy;
   
-  if (sx < tx) {
-    tempX = tx;
-  } else if (sx > tx + tw) {
-  tempX = tx + tw;
-  } if (sy < ty) {
-    tempY = ty;
-  } else if (sy > ty + th)
-  tempY = ty + th;
+  // perform calculations on the parameters to determine distance
+  if (sx < tx) { //if shot X coord is less than tank X coord
+    tempX = tx; //assign tank X coord to temp var
+  } else if (sx > tx + tw) { //if shot X coord is greater than tank X coord and tank width
+  tempX = tx + tw; //assign tank X coord and tank width to temp var
+  } if (sy < ty) { // if shot Y coord is less than tank Y coord
+    tempY = ty; //assign tank Y coord to temp var
+  } else if (sy > ty + th) //if shot Y coord is greater than tank Y coord and tank height
+  tempY = ty + th; //assign tank Y coord and tank height to temp var
   
-  float distX = sx - tempX;  //
-  float distY = sy - tempY;  //
-  float distance = sqrt((distX * distX) + (distY * distY));  //
+  float distX = sx - tempX; //subtract temp X var from shot X coord var
+  float distY = sy - tempY; //subtract temp Y var from shot Y coord var
+  float distance = sqrt((distX * distX) + (distY * distY)); //calculate distance
   
-  if (distance <= radius) {  //
-    //println("Hit!");
-    return true;
+  if (distance <= radius) { //if distance is less than or equal
+    return true; //then return true
   }
-  return false;
+  return false; //else return false
 }
 
 
@@ -351,36 +353,40 @@ boolean shellTankCollision(float sx, float sy, float radius, float tx, float ty,
  * Author(s):  Zac Madden
  *
  *
- * Function:   TODO
+ * Function:   Calculates the distance between the both tanks
  *             
- * Parameters: tx        - 
- *             ty        - 
- *             p2tx      - 
- *             p2ty      - 
+ * Parameters: tx        - tank X coordinate
+ *             ty        - tank Y coordinate
+ *             p2tx      - player 2 tank X coordinate
+ *             p2ty      - player 2 tank Y coordinate
+ *
+ * Returns:    Returns true if the distance is less and or equal to tank width
+ *             and height, otherwise returns false
  *
  **********************************************************************************/
 boolean tankOnTankCollision(float tx, float ty, float p2tx, float p2ty) {
   
-  float tempX = tx;  //
-  float tempY = ty;  //
+  float tempX = tx;
+  float tempY = ty; 
   
-  if (tx < p2tx) {
-    tempX = p2tx;
-  } else if (tx > p2tx) {
-  tempX = p2tx;
-  } if (ty < p2ty) {
-    tempY = p2ty;
-  } else if (ty > p2ty + 20)
-  tempY = p2ty;
+  // perform calculations on the parameters to determine distance
+  if (tx < p2tx) { //if tank X coord is less than player 2 tank X coord
+    tempX = p2tx; //assign player 2 tank X coord to temp var
+  } else if (tx > p2tx) { //if tank X coord is greater than player 2 tank X coord and tank width
+  tempX = p2tx; //assign player tank X coord and tank width to temp var
+  } if (ty < p2ty) { // if tank Y coord is less than player 2 tank Y coord
+    tempY = p2ty; //assign player 2 tank Y coord to temp var
+  } else if (ty > p2ty + 20) //if tank Y coord is greater than player 2 tank Y coord and tank height
+  tempY = p2ty; //assign player 2 tank Y coord and tank height to temp var
   
-  float distX = tx - tempX;  //
-  float distY = ty - tempY;  //
-  float distance = sqrt((distX * distX) + (distY * distY));  //
+  float distX = tx - tempX; //subtract temp X var from tank X coord var
+  float distY = ty - tempY; //subtract temp Y var from tank Y coord var
+  float distance = sqrt((distX * distX) + (distY * distY)); //calculate distance
   
-  if (distance <= 20) {  //
-    return true;
+  if (distance <= 20) { //if distance is less than or equal
+    return true; //then return true
   }
-  return false;
+  return false; //else return false
 }
 
 
