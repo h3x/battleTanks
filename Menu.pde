@@ -1,3 +1,5 @@
+
+
 /**********************************************************************************
  * Class:     Menu
  *
@@ -108,7 +110,7 @@ class Menu {
  *
  * Author(s):    Adam Austin
  *
- * Function:     TODO
+ * Function:     The main screen
  *             
  * Parameters:   None
  *
@@ -160,7 +162,7 @@ class Menu {
  *
  * Author(s):    Adam Austin
  *
- * Function:     TODO
+ * Function:     The "Start Multiplayer" screen
  *             
  * Parameters:   None
  *
@@ -202,7 +204,7 @@ class Menu {
  *
  * Author(s):    Adam Austin
  *
- * Function:     TODO
+ * Function:     The final screen before the game, shows server host name on server machine
  *             
  * Parameters:   None
  *
@@ -232,7 +234,7 @@ class Menu {
  *
  * Author(s):    Adam Austin
  *
- * Function:     TODO
+ * Function:     The join game screen
  *             
  * Parameters:   None
  *
@@ -262,7 +264,7 @@ class Menu {
  *
  * Author(s):    Adam Austin
  *
- * Function:     TODO
+ * Function:     Used for keyboard interaction with the menu
  *             
  * Parameters:   None
  *
@@ -300,10 +302,12 @@ class Menu {
  *
  * Author(s):    Adam Austin
  *
- * Function:     TODO
+ * Function:     returns wether the program is acting as a server or client
  *             
  * Parameters:   None
  *
+ * Return values: isServer - True if acting as a server
+ *                         - false if acting as a client
  **********************************************************************************/
   boolean getServerStatus() {
     return isServer;
@@ -315,10 +319,12 @@ class Menu {
  *
  * Author(s):    Adam Austin
  *
- * Function:     TODO
+ * Function:     returns wether the program is running the game locally only
  *             
  * Parameters:   None
  *
+ * Return values: isLocal -  True if playing locally
+ *                         - false if playing over network
  **********************************************************************************/
   boolean isLocal(){
    return isLocal;

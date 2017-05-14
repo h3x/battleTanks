@@ -49,6 +49,7 @@
 
  */
 
+//Imports
 import ddf.minim.*;
 import processing.net.*;
 import java.net.InetAddress;
@@ -76,6 +77,7 @@ int pe = 0;
 Map map;
 Menu menu;
 
+//The map!
 int[] tmp = { 145, 110, 180, 179, 178, 134, 169, 204, 205, 206, 694, 729, 659, 660, 661, 635, 670,
               705, 634, 633, 17, 52, 87, 822, 787, 419, 418, 417, 385, 386, 387,  568,  533,  534,
               499, 586, 515, 192, 191, 193, 227, 18, 16, 821, 823, 384, 454, 289,  253, 324,  288,
@@ -146,15 +148,17 @@ void setup(){
   
   //Play theme music
   mainTheme = minim.loadFile("data/Enemy spotted.mp3");
-  if(music) {
+  if(!music) {
     mainTheme.loop();
     music = true;
   }
   creditsTheme = minim.loadFile("credit_outtro.wav");
   
+  //background image
   bg = loadImage("sand.jpg");
   bg.resize(1050, 720);
   
+  //wall image
   tile = loadImage("04tizeta_redwall.jpg");
   tile.resize(30, 30);
   
@@ -174,7 +178,7 @@ void setup(){
  * Author(s):  Adam Austin
  *             Zac Madden
  *
- * Function:   TODO
+ * Function:   Draw loop runs every frame
  *             
  * Parameters: None
  *
@@ -206,7 +210,6 @@ void draw(){
   
   else{
     //setup networking stuff (runs once only when the network config is set up via the menu)
-    
     if (!Util.networkSetup && Util.setup) {
       println("setup");
       if (isServer) {
@@ -224,9 +227,7 @@ void draw(){
       isServer = menu.getServerStatus();
      
     }
-    
-    
-  //println("local:" + menu.isLocal());
+
   //The real draw loop starts here after network stuff is setup
   for (int i = shell.size()-1; i >= 0; i--) {
     Turret s = shell.get(i);
@@ -242,12 +243,11 @@ void draw(){
        player1Score.incrementScore(25);
       }
     }
-    if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) { //issue here <<----
+    if (s.wrap() == true || mapTiles.indexOf(Util.coordToNumber(s.getLocation())) >= 0) {
       shell.remove(i);
       break;
     }
-  }
-  
+  }  
     for (int i = enemyShell.size()-1; i >= 0; i--) {
     Turret e = enemyShell.get(i);
     e.update();
@@ -262,15 +262,15 @@ void draw(){
        player2Score.incrementScore(25);
       }
     }
-    //println(Util.coordToNumber(e.getLocation()));
+
     if (e.wrap() == true || mapTiles.indexOf(Util.coordToNumber(e.getLocation())) >= 0) {
       enemyShell.remove(i);
       break;
     }
   }
 
-  map.drawMap();  
-  
+  map.drawMap();    
+  //If network game, read and write network data
   if(!isLocal){
     readNetwork();
     
@@ -280,8 +280,7 @@ void draw(){
     catch (NullPointerException npe){
     //This stops a program crash if there is a brief interuption in the network connection
     }
-  }
-  
+  }  
   player.damage(20, 20, 1, 20, 40);
   player2.damage(930, 20, 2, 930, 40);
   
@@ -327,23 +326,23 @@ boolean shellTankCollision(float sx, float sy, float radius, float tx, float ty,
   float tempY = sy;
   
   // perform calculations on the parameters to determine distance
-  if (sx < tx) { //if shot X coord is less than tank X coord
-    tempX = tx; //assign tank X coord to temp var
-  } else if (sx > tx + tw) { //if shot X coord is greater than tank X coord and tank width
-  tempX = tx + tw; //assign tank X coord and tank width to temp var
-  } if (sy < ty) { // if shot Y coord is less than tank Y coord
-    tempY = ty; //assign tank Y coord to temp var
-  } else if (sy > ty + th) //if shot Y coord is greater than tank Y coord and tank height
-  tempY = ty + th; //assign tank Y coord and tank height to temp var
+  if (sx < tx) {                     //if shot X coord is less than tank X coord
+    tempX = tx;                      //assign tank X coord to temp var
+  } else if (sx > tx + tw) {         //if shot X coord is greater than tank X coord and tank width
+  tempX = tx + tw;                   //assign tank X coord and tank width to temp var
+  } if (sy < ty) {                   // if shot Y coord is less than tank Y coord
+    tempY = ty;                      //assign tank Y coord to temp var
+  } else if (sy > ty + th)           //if shot Y coord is greater than tank Y coord and tank height
+  tempY = ty + th;                   //assign tank Y coord and tank height to temp var
   
-  float distX = sx - tempX; //subtract temp X var from shot X coord var
-  float distY = sy - tempY; //subtract temp Y var from shot Y coord var
+  float distX = sx - tempX;         //subtract temp X var from shot X coord var
+  float distY = sy - tempY;         //subtract temp Y var from shot Y coord var
   float distance = sqrt((distX * distX) + (distY * distY)); //calculate distance
   
-  if (distance <= radius) { //if distance is less than or equal
-    return true; //then return true
+  if (distance <= radius) {         //if distance is less than or equal
+    return true;                    //then return true
   }
-  return false; //else return false
+  return false;                     //else return false
 }
 
 
@@ -370,23 +369,23 @@ boolean tankOnTankCollision(float tx, float ty, float p2tx, float p2ty) {
   float tempY = ty; 
   
   // perform calculations on the parameters to determine distance
-  if (tx < p2tx) { //if tank X coord is less than player 2 tank X coord
-    tempX = p2tx; //assign player 2 tank X coord to temp var
-  } else if (tx > p2tx) { //if tank X coord is greater than player 2 tank X coord and tank width
-  tempX = p2tx; //assign player tank X coord and tank width to temp var
-  } if (ty < p2ty) { // if tank Y coord is less than player 2 tank Y coord
-    tempY = p2ty; //assign player 2 tank Y coord to temp var
-  } else if (ty > p2ty + 20) //if tank Y coord is greater than player 2 tank Y coord and tank height
-  tempY = p2ty; //assign player 2 tank Y coord and tank height to temp var
+  if (tx < p2tx) {                 //if tank X coord is less than player 2 tank X coord
+    tempX = p2tx;                  //assign player 2 tank X coord to temp var
+  } else if (tx > p2tx) {          //if tank X coord is greater than player 2 tank X coord and tank width
+  tempX = p2tx;                    //assign player tank X coord and tank width to temp var
+  } if (ty < p2ty) {               // if tank Y coord is less than player 2 tank Y coord
+    tempY = p2ty;                  //assign player 2 tank Y coord to temp var
+  } else if (ty > p2ty + 20)       //if tank Y coord is greater than player 2 tank Y coord and tank height
+  tempY = p2ty;                    //assign player 2 tank Y coord and tank height to temp var
   
-  float distX = tx - tempX; //subtract temp X var from tank X coord var
-  float distY = ty - tempY; //subtract temp Y var from tank Y coord var
+  float distX = tx - tempX;       //subtract temp X var from tank X coord var
+  float distY = ty - tempY;       //subtract temp Y var from tank Y coord var
   float distance = sqrt((distX * distX) + (distY * distY)); //calculate distance
   
-  if (distance <= 20) { //if distance is less than or equal
-    return true; //then return true
+  if (distance <= 20) {           //if distance is less than or equal
+    return true;                  //then return true
   }
-  return false; //else return false
+  return false;                   //else return false
 }
 
 
@@ -396,7 +395,7 @@ boolean tankOnTankCollision(float tx, float ty, float p2tx, float p2ty) {
  * Author(s):  Adam Austin
  *
  *
- * Function:   TODO
+ * Function:   reads network data set from server or client
  *             
  * Parameters: None
  *
@@ -426,17 +425,15 @@ void readNetwork(){
  * Author(s):  Adam Austin
  *
  *
- * Function:   TODO
+ * Function:   Write player positions to connected player
  *             
  * Parameters: None
  *
  **********************************************************************************/
 void writeNetwork(){
    if (isServer) {
-    //println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
     s.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
-  } else {
-    
+  } else {    
     c.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
   } 
 }
@@ -448,7 +445,7 @@ void writeNetwork(){
  * Author(s):  Adam Austin
  *
  *
- * Function:   TODO
+ * Function:   parse the network data and redirect into classes/methods appropriate to the propper function
  *             
  * Parameters: None
  *
@@ -463,14 +460,14 @@ void parse(String inString) {
   catch (NullPointerException npe) {
     return;
   }
-  //println(inString);
- //#P12,32H-1.0834
+
   //Player movement decoding
   if (inString.charAt(1) == 'P') {
     String playerData = inString.substring(3);
     int newX = int(playerData.substring(0, playerData.indexOf(',')));
     int newY = int(playerData.substring(playerData.indexOf(',')+1, playerData.indexOf('H')));
     float newHeading = float(playerData.substring(playerData.indexOf('H') + 1, playerData.length()-1));
+    
     //Player 1 (i.e this player)
     if (inString.charAt(2)== 'F') {
       player.setLocation(newX, newY);
@@ -481,10 +478,12 @@ void parse(String inString) {
       player2.setLocation(newX, newY);
       player2.setHeading(newHeading);
     }    
-    //println("Player Data: " + inString);
+    
+  //Map data
   } else if (inString.charAt(1) == 'M') {
     map.decodeMap(inString);
-    //print("Map data: " + inString) ;
+    
+  //shell data
   } else if (inString.charAt(1) == 'B'){
      enemyShell.add(new Turret(player2.location, player2.getHeading(), 5));
   }   
@@ -497,7 +496,7 @@ void parse(String inString) {
  * Author(s):  Adam Austin
  *             Zac Madden
  *
- * Function:   TODO
+ * Function:   detect and react to key presses depending on if theuser is in the menu, player1 or player 2
  *             
  * Parameters: None
  *
@@ -507,12 +506,13 @@ void keyPressed(){
     menu.select();
   }
   else{
-    //add if statement here to check for localPlay boolean, and player2.moveLocal() will be called (need to create that with different key bondiongs)
-   player.move();
+     player.move();
    
    if(isLocal){
      player2.move();
    }
+   
+   //kept on purpose for map making later. Will be merged into the map editor outside the scope of this assignment
    //if(key == 'a'){
    // println(mapTiles);
    //}
@@ -526,7 +526,7 @@ void keyPressed(){
  * Author(s):  Adam Austin
  *             Zac Madden
  *
- * Function:   TODO
+ * Function:   detect and react to key release event
  *             
  * Parameters: None
  *
@@ -547,19 +547,37 @@ void keyReleased(){
   }
 }
 
-// when first connecting, server sends initial co-ords of both players 
-// and the map data
+
+/**********************************************************************************
+ * Method:     serverEvent()
+ *
+ * Author(s):  Adam Austin
+ *             
+ *
+ * Function:   This is a built in method that runs on client connect. 
+ *             Only active on the server side program
+ *             
+ * Parameters: someServer - this server
+ *             someClient - the connecting client
+ *
+ * Notes:      when first connecting, server sends initial co-ords of both players 
+*              and the map data
+ **********************************************************************************/
 void serverEvent(Server someServer, Client someClient) {
   println("We have a new client: " + someClient.ip());   
+  
+  //set player 2 onscreen
   int p2x = floor(player2LocalCoords.x); 
   int p2y = floor(player2LocalCoords.y);
   player2.setLocation(p2x, p2y);
+  //tell the client where both players are and which way they are facing
   s.write("#PF" + p2x + "," + p2y + "H" + player.getHeading() + "\n");
   s.write("#PS" + player.getXLocation() + "," + player.getXLocation() + "H" + player.getHeading() + "\n");
+  // turn the map into a string
   for (int i = 0; i < mapTiles.size(); i++) {
     sendMap += mapTiles.get(i)+",";
   }
-
+  //adn send it to the client
   s.write("#M" + sendMap + "\n");
 
 }
@@ -571,7 +589,7 @@ void serverEvent(Server someServer, Client someClient) {
  * Author(s):  Adam Austin
  *
  *
- * Function:   TODO
+ * Function:   Used during map making to add walls. For development only, not for production release
  *             
  * Parameters: None
  *
