@@ -121,8 +121,6 @@ class Menu {
     maxSelection = textString.length - 1;
     for (int i = 0; i < textString.length; i++) {
       if (i == selection) {
-        creditsTheme.pause();
-        creditsTheme.rewind();
         fill(c1);
       } else {
         fill(c2);
@@ -145,7 +143,6 @@ class Menu {
         break;
 
       case 2:
-      creditsTheme.loop();
         screen = 3;
         break;
 

@@ -99,7 +99,6 @@ PVector player2LocalCoords = new PVector(960, 630);
 //Music player
 Minim minim = new Minim(this);
 AudioPlayer mainTheme;
-AudioPlayer creditsTheme;
 AudioSample tankShot;
 AudioSample tankExplosion;
 boolean music = false;
@@ -152,7 +151,6 @@ void setup(){
     mainTheme.loop();
     music = true;
   }
-  creditsTheme = minim.loadFile("credit_outtro.wav");
   
   //background image
   bg = loadImage("sand.jpg");
