@@ -322,7 +322,9 @@ class Player {
     if (shotFired == true && frameCount % 100 == 0) { //restrict shot frequency
       shotFired = false;
     }
+    //rect(location.x -10, location.y -10, 20, 20);
     explosion();
+    
     
   }
 

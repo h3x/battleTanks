@@ -3,11 +3,19 @@
  *
  * Authors:   Adam Austin
  *
- * Function:  TODO
+ * Function:  Create and control the menu. Options selected in the menu are then stored in the Util 
+              class for later use and reference by other classes and methods outside the menu
  *             
- * Imports:   TODO
+ * Imports:   None
  *
- * Methods:   TODO
+ * Methods:   display()           - Displays the current menu screen
+ *            screenMain()        - This is the main menu screen
+ *            screenServer()      - This is the screen to either start a server or start a local game
+ *            screenServerReady() - This is the screen just before game play starts. Shows the server hostname 
+ *            screenClient()      - This is the screen for the client to enter the hostname of the server and connect
+ *            select()            - This is the keyboard interaction for the user to select options in the menu, and type a hostname when required
+ *            getServerStatus()   - Returns wether or not the current program is acting as a server or client
+ *            isLocal()           - Returns wether or not the current program is local multiplayer or over LAN 
  *
  **********************************************************************************/
 
@@ -34,11 +42,9 @@ class Menu {
  *
  * Author(s):  Adam Austin
  *
- * Function:   TODO
+ * Function:   Create the menu object
  *             
- * Parameters: TODO
- *
- * Notes:      TODO
+ * Parameters: None
  *
  **********************************************************************************/
   Menu() {
@@ -57,13 +63,15 @@ class Menu {
 
 
  /**********************************************************************************
- * Method:       display()
+ * Method:        display()
  *
- * Author(s):    Adam Austin
+ * Author(s):     Adam Austin
  *
- * Function:     TODO
+ * Function:      Display the current screen option
  *             
- * Parameters:   None
+ * Parameters:    None
+ *
+ * Return values: None
  *
  **********************************************************************************/
   void display() {

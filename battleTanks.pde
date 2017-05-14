@@ -92,8 +92,9 @@ float tilesAcross;
 float tilesDown;
 int tileNumber;
 boolean isLocal = false;
-//PVector player2LocalCoords = new PVector(960, 630);
-PVector player2LocalCoords = new PVector(60, 100);
+PVector player2LocalCoords = new PVector(960, 630);
+
+//PVector player2LocalCoords = new PVector(60, 100);
 
 //Music player
 Minim minim = new Minim(this);
@@ -430,7 +431,7 @@ void writeNetwork(){
     //println("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
     s.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
   } else {
-    //println(isServer);
+    
     c.write("#PS" + player.getXLocation() + "," + player.getYLocation() + "H" + player.getHeading() + "\n");
   } 
 }
@@ -458,7 +459,7 @@ void parse(String inString) {
     return;
   }
   //println(inString);
-
+ //#P12,32H-1.0834
   //Player movement decoding
   if (inString.charAt(1) == 'P') {
     String playerData = inString.substring(3);
