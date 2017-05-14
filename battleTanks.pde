@@ -23,10 +23,6 @@
  Original content composer: Alexandr Zhelanov
  https://opengameart.org/content/enemy-spotted
  
- Outro Theme on Credits screen composed project team member.
- Original content creator: Zac Madden
- zac.madden@gmail.com
- 
  Sand dunes background image approved for public use by creator.
  Original content creator: txturs
  https://opengameart.org/content/2048-digitally-painted-tileable-desert-sand-texture
